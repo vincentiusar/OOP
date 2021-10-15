@@ -17,17 +17,22 @@ public class subProject {
         this.CheckDone(done);
     }
     public void setId(String id_subProj){
-        this.Id_subProj = Id_subproj;   
+        this.id_subProj = id_subproj;   
+    }
+    public String getId{
+        return id_subProj;
     }
     public void setNama(String nama){
         this.nama = nama;
+    }
+    public String getNama{
+        return nama;
     }
     public void setWho(String who){
         this.who = who;    
     }
     public boolean CheckDone( boolean done){
         boolean found = false;
-     
         return found;
     }
 }
