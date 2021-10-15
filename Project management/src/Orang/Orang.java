@@ -1,28 +1,34 @@
 package Orang;
 
-/**
- *
- * @author Vincentius
- */
 public class Orang {
     private String id,nama,jabatan;
-
-    public void setID(String id){
-      id = this.id;
+    
+    public Orang(String id, String nama, String jabatan) {
+        this.setId(id);
+        this.setNama(nama);
+        this.setJabatan(jabatan);
     }
+    
+    public void setId(String id){
+      this.id = id;
+    }
+    
     public void setNama(String nama){
-      nama = this.nama;
+      this.nama = nama;
     }
+    
     public void setJabatan(String jabatan){
-      jabatan = this.jabatan;
+      this.jabatan = jabatan;
     }
 
-    public String getID(){
+    public String getId() {
       return this.id;
     }
+    
     public String getNama(){
       return this.nama;
     }
+    
     public String getJabatan(){
       return this.jabatan;
     }
