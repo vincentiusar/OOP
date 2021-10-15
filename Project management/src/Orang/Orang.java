@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Orang;
 
 /**
@@ -10,5 +5,29 @@ package Orang;
  * @author Vincentius
  */
 public class Orang {
-    
+    private String id,nama,jabatan;
+
+    public void setID(String id){
+      id = this.id;
+    }
+    public void setNama(String nama){
+      nama = this.nama;
+    }
+    public void setJabatan(String jabatan){
+      jabatan = this.jabatan;
+    }
+
+    public String getID(){
+      return this.id;
+    }
+    public String getNama(){
+      return this.nama;
+    }
+    public String getJabatan(){
+      return this.jabatan;
+    }
+
+    public void showInfo(){
+
+    }
 }
