@@ -1,20 +1,25 @@
-package Orang;
-
+package Employee;
 /**
  *
  * @author Vincentius
  */
-public class Orang {
+public class Employee {
     private String id,nama,jabatan;
-
+    
+    public Employee(String id, String nama, String jabatan){
+        this.setID(id);
+        this.setNama(nama);
+        this.setJabatan(jabatan);
+    }
+    
     public void setID(String id){
-      id = this.id;
+       this.id = id;
     }
     public void setNama(String nama){
-      nama = this.nama;
+      this.nama = nama;
     }
     public void setJabatan(String jabatan){
-      jabatan = this.jabatan;
+      this.jabatan = jabatan;
     }
 
     public String getID(){
@@ -26,8 +31,5 @@ public class Orang {
     public String getJabatan(){
       return this.jabatan;
     }
-
-    public void showInfo(){
-
-    }
+    
 }
