@@ -5,7 +5,7 @@ import subProject.subProject;
 import java.util.Date;
 import java.util.Scanner;
 
-public class project {
+public class Project {
     Scanner cin = new Scanner(System.in);
     
     private String id_proj, nama;
@@ -13,7 +13,7 @@ public class project {
     private Orang worker[] = new Orang[10];
     private subProject side[] = new subProject[5];
     
-    public project(Orang org[], String id_proj, String nama, Date timeStart, Date deadLine, int num_worker, int num_sub) {
+    public Project(Orang org[], String id_proj, String nama, Date timeStart, Date deadLine, int num_worker, int num_sub) {
         this.setId(id_proj);
         this.setNama(nama);
         this.setDateStart(timeStart);
@@ -61,8 +61,8 @@ public class project {
     
     public void setWorker(Orang org[], int n) {
         for (int i = 0; i < n; i++) {
-            System.out.println("ID      : ", org[i].getId());
-            System.out.println("Nama    : ", org[i].getId());
+            System.out.println("ID      : " + org[i].getNama());
+            System.out.println("Nama    : " + org[i].getId());
         }
         for (int i = 0; i < n; i++) {
             String str;
@@ -109,4 +109,34 @@ public class project {
         }
     }
     
+	public String getId() {
+		return this.id_proj;
+	}
+	
+	public String getNama() {
+		return this.nama;
+	}
+	
+	public Date getDateStart() {
+		return this.timeStart;
+	}
+	
+	public Date getDateEnd() {
+		return this.deadLine;
+	}
+	
+	public void showInfo() {
+		System.out.println("ID project : " + this.getId());
+		System.out.println("Nama Project : " + this.getNama());
+		System.out.println("Mulai Project : " + this.getDateStart());
+		System.out.println("Deadline : " + this.getDateEnd());
+		System.out.println("Pekerja : ");
+		for (int i = 0; i < 10 && worker[i] != null; i++) {
+			System.out.println("Orang " + i+1 + " : " + worker[i].getId() + " " + worker[i].getNama());
+		}
+		System.out.println("Pekerja : ");
+		for (int i = 0; i < 5 && side[i] != null; i++) {
+			System.out.println("subProject " + i+1 + " : " + side[i].getId() + " " + side[i].getNama());
+		}
+	}
 }
