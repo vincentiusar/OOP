@@ -1,10 +1,7 @@
 package Employee;
-/**
- *
- * @author Vincentius
- */
+
 public class Employee {
-    private String id,nama,jabatan;
+    private String id, nama, jabatan;
 
     public Employee(String id, String nama, String jabatan){
         this.setID(id);
