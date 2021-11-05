@@ -75,8 +75,8 @@ public class Project extends Customer {
         for (int i = 0; i < nE; i++) {
             // tampilkan semua karyawan
             System.out.print((i+1) + ". ");
-            System.out.println("ID      : " + org[i].getNama());
-            System.out.println("Nama    : " + org[i].getId());
+            System.out.println("ID      : " + org[i].getId());
+            System.out.println("Nama    : " + org[i].getNama());
         }
         for (int i = 0; i < n; i++) {
             // masukkan employee yang akan mengerjakan proyek
@@ -85,7 +85,7 @@ public class Project extends Customer {
                 System.out.println("Masukan id pegawai :");
                 str = cin.nextLine();
                 // kalau belum ada di list project, masukkan employee
-            } while (!checkIdOrang(org, this.worker, str, nE));     
+            } while (checkIdOrang(org, this.worker, str, nE));     
             this.worker[lenEm++] = new Employee(this.findOrang(org, str, nE).getId(), this.findOrang(org, str, nE).getNama(), this.findOrang(org, str, nE).getJabatan());
         }
     }

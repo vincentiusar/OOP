@@ -89,18 +89,16 @@ public class Drivers {
                     nama = cin.nextLine();
                     
                     System.out.println("Masukkan ID customer : ");
-                    cin.nextLine();
                     id_cus = cin.nextLine();
                     
                     System.out.println("Masukkan nama customer : ");
-                    cin.nextLine();
                     nama_cus = cin.nextLine();
                     
                     System.out.println("Mulai project (yyyy-mm-dd)");
                     id = cin.nextLine();
                     start = new Date(Integer.valueOf(id.substring(0, 4)), Integer.valueOf(id.substring(5, 7)), Integer.valueOf(id.substring(8, 10)));
                     
-                    System.out.println("Mulai project (dd-mm-yyyy)");
+                    System.out.println("End project (dd-mm-yyyy)");
                     id = cin.nextLine();
                     end = new Date(Integer.valueOf(id.substring(7, 10)), Integer.valueOf(id.substring(3, 4)), Integer.valueOf(id.substring(0, 1)));
             
