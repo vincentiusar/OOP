@@ -5,7 +5,8 @@ public abstract class Customer {
     private String name;
     
     public Customer(String id, String name) {
-        
+        this.setID(id);
+        this.setName(name);
     }
     
     private void setID(String id) {
