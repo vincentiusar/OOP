@@ -33,6 +33,7 @@ public class subProject extends Project{
     }
     
     private int findWorker(Employee worker[], String str) {
+        // cari apakah pekerja ada dalam project ini
         for (int i = 0; i < worker.length; i++) {
             if (worker[i].getId().equals(str)) {
                 return i;
@@ -42,6 +43,7 @@ public class subProject extends Project{
     }
     
     public void setWho(Employee worker[], int nw) {
+        // daftarkan orang yang kerja di sub project ini
         for (int i = 0; i < nw; i++) {
             String str; 
             do {

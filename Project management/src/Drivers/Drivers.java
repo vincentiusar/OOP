@@ -25,6 +25,7 @@ public class Drivers {
     }
     
     static boolean findEmployee(Employee E[], String str) {
+        // cek apakah employee sudah terdaftar dengan ID
         for (int i = 0; i < nE; i++) {
             if (E[i].getId().equals(str)) return true;
         }
@@ -32,6 +33,7 @@ public class Drivers {
     }
     
     static boolean findProject(Project P[], String str) {
+        // cek apakah project sudah terdaftar dengan ID
         for (int i = 0; i < nP; i++) {
             if (P[i].getId().equals(str)) return true;
         }
@@ -81,6 +83,7 @@ public class Drivers {
                         System.out.println("Masukkan ID project : ");
                         cin.nextLine();
                         id = cin.nextLine();
+                        // lakukan sampai project belum ada
                     } while (findProject(P, id));
                     System.out.println("Masukkan Nama project : ");
                     nama = cin.nextLine();
