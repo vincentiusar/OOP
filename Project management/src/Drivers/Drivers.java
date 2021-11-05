@@ -45,7 +45,7 @@ public class Drivers {
         while (true) {
             menu();
             int choose = cin.nextInt();
-            String id, nama, jabatan, divisi;
+            String id, nama, jabatan, divisi, id_cus, nama_cus;
             Date start, end;
             int n, k;
             switch (choose) {
@@ -78,12 +78,20 @@ public class Drivers {
                     break;
                 case 2 :
                     do {
-                        System.out.println("Masukkan ID : ");
+                        System.out.println("Masukkan ID project : ");
                         cin.nextLine();
                         id = cin.nextLine();
                     } while (findProject(P, id));
-                    System.out.println("Masukkan Nama : ");
+                    System.out.println("Masukkan Nama project : ");
                     nama = cin.nextLine();
+                    
+                    System.out.println("Masukkan ID customer : ");
+                    cin.nextLine();
+                    id_cus = cin.nextLine();
+                    
+                    System.out.println("Masukkan nama customer : ");
+                    cin.nextLine();
+                    nama_cus = cin.nextLine();
                     
                     System.out.println("Mulai project (yyyy-mm-dd)");
                     id = cin.nextLine();
@@ -99,7 +107,7 @@ public class Drivers {
                     System.out.println("Jumlah Pekerja :");
                     k = cin.nextInt();
                     
-                    P[nP] = new Project(E, id, nama, start, end, k, n, nE, nP);
+                    P[nP] = new Project(id_cus, nama_cus, E, id, nama, start, end, k, n, nE, nP);
                     break;
                 case 3 :
                     for (int i = 0; i < nE; i++) {

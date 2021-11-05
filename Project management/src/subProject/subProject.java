@@ -14,8 +14,8 @@ public class subProject extends Project{
     private Employee who[];
     private boolean done;
     
-    public subProject(Employee worker[], String id_sub, Employee E[], String id, String nama, Date start, Date end, int num_worker, int num_sub,int nE, int nP) {
-        super(E, id, nama, start, end, num_worker, num_sub, nE, nP);
+    public subProject(String id_cus, String nama_cus, Employee worker[], String id_sub, Employee E[], String id, String nama, Date start, Date end, int num_worker, int num_sub,int nE, int nP) {
+        super(id_cus, nama_cus, E, id, nama, start, end, num_worker, num_sub, nE, nP);
         
         this.setIdSubProj(id_sub);
         String name = cin.nextLine();

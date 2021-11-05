@@ -4,8 +4,9 @@ import Employee.Employee;
 import subProject.subProject;
 import java.util.Date;
 import java.util.Scanner;
+import Customer.Customer;
 
-public class Project {
+public class Project extends Customer {
     Scanner cin = new Scanner(System.in);
     
     private String id_proj, nama;
@@ -14,14 +15,15 @@ public class Project {
     private subProject side[] = new subProject[5];
     private int lenEm, lenSu;
     
-    public Project(Employee E[], String id_proj, String nama, Date timeStart, Date deadLine, int num_worker, int num_sub, int nE, int nP) {
+    public Project(String id_cus, String nama_cus, Employee E[], String id_proj, String nama, Date timeStart, Date deadLine, int num_worker, int num_sub, int nE, int nP) {
+        super(id_cus, nama_cus);
         if (E.length != 0) {
             this.setId(id_proj);
             this.setNama(nama);
             this.setDateStart(timeStart);
             this.setDateEnd(deadLine);
             this.setWorker(E, num_worker, nE);
-            this.setSubProject(E, num_sub, num_worker, nE, nP);
+            this.setSubProject(id_cus, nama_cus, E, num_sub, num_worker, nE, nP);
         }
     }
     
@@ -98,7 +100,7 @@ public class Project {
         return false;
     }
     
-    public void setSubProject(Employee E[], int n, int num_worker, int nE, int nP) {
+    public void setSubProject(String id_cus, String nama_cus, Employee E[], int n, int num_worker, int nE, int nP) {
         // cek apakah subproject > 5
         while (n > 5) {
             System.out.println("Jumlah subProject > 5 :");
@@ -111,7 +113,7 @@ public class Project {
                 System.out.println("masukkan id subproject");
                 id_sub = cin.nextLine();
             } while (this.findSub(side, id_sub, lenSu));
-            this.side[lenSu++] = new subProject(this.worker, id_sub, E, this.getId(), this.getNama(), this.getDateStart(), this.getDateEnd(), num_worker, n, nE, nP);
+            this.side[lenSu++] = new subProject(id_cus, nama_cus, this.worker, id_sub, E, this.getId(), this.getNama(), this.getDateStart(), this.getDateEnd(), num_worker, n, nE, nP);
         }
     }
     
