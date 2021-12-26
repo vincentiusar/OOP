@@ -46,14 +46,30 @@ public class driver extends javax.swing.JFrame {
         try {
             conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
             stmt = conn.createStatement();
-//            String st = "INSERT INTO manager VALUES (1, Aku adalah lelaki, Manager, admin";
-            String st = "SELECT * FROM manager";
+            String st;
+//            String st = "INSERT INTO manager (nama, jabatan, headof) VALUES (?, ?, ?);";
+//            PreparedStatement ps = conn.prepareStatement(st);
+//            ps.setString(1, "kamu");
+//            ps.setString(2, "Manager");
+//            ps.setString(3, "makan");
+//            ps.execute();
+//            st = "UPDATE manager SET nama = ? WHERE nama = ?";
+//            PreparedStatement ps = conn.prepareStatement(st);
+//            ps.setString(1, "aduh");
+//            ps.setString(2, "aku adalah lelaki");
+//            ps.execute();
+            st = "SELECT * FROM manager";
             rs = stmt.executeQuery(st);
+            while (rs.next()) {
+                String nama = rs.getString("nama");
+                listModel.addElement(nama);
+            }
             stmt.close();
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        ListManager.setModel(listModel);
     }
     
     /**
@@ -122,16 +138,18 @@ public class driver extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ListManagerLabel)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(newManagerButton))
-                .addGap(43, 43, 43)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(ListPekerjaLabel)
-                    .addComponent(jScrollPane2)
-                    .addComponent(newPekerjaButton, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
-                .addGap(38, 38, 38)
-                .addComponent(jLabel2)
-                .addContainerGap(147, Short.MAX_VALUE))
+                    .addComponent(newManagerButton)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(67, 67, 67)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ListPekerjaLabel)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2))
+                    .addComponent(newPekerjaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(149, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,7 +206,7 @@ public class driver extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(70, 70, 70)
                         .addComponent(hapusProjectButton)))
-                .addContainerGap(243, Short.MAX_VALUE))
+                .addContainerGap(374, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,7 +230,7 @@ public class driver extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 476, Short.MAX_VALUE)
+            .addGap(0, 607, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
