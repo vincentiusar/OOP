@@ -1,10 +1,10 @@
-package CEO;
+package Manager;
 import Employee.Employee;
 
-public class CEO extends Employee{
+public class Manager extends Employee{
     private String headOf;
     
-    public CEO(String id, String nama, String jabatan, String headOf) {
+    public Manager(String id, String nama, String jabatan, String headOf) {
         super(id, nama, jabatan);
         this.setHeadOf(headOf);
     }

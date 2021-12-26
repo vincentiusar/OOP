@@ -1,10 +1,10 @@
-package Manager;
+package Subordinate;
 import Employee.Employee;
 
-public class Manager extends Employee{
+public class Subordinate extends Employee{
     private String divisi;
     
-    public Manager(String id, String nama, String jabatan, String divisi) {
+    public Subordinate(String id, String nama, String jabatan, String divisi) {
         super(id, nama, jabatan);
         this.setDivisi(divisi);
     }
