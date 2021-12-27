@@ -19,7 +19,7 @@ import javax.swing.SwingUtilities;
  *
  * @author Vincentius
  */
-public class popupLayer extends javax.swing.JFrame {
+public class editEmployeeLayer extends javax.swing.JFrame {
 
     static final String DB_URL = "jdbc:mysql://localhost/projectmanagementtubes";
     static final String DB_USER = "root";
@@ -62,21 +62,24 @@ public class popupLayer extends javax.swing.JFrame {
                     ps.execute();
                 } else {
                     if (prev_jabatan.equals(now_jabatan)) {
-                        String st = "UPDATE ? SET nama = ?, divisi = ? WHERE nama = ?";
+                        String st;
+                        if ("Manager".equals(now_jabatan)) {
+                            st = "UPDATE " + now_jabatan + " SET nama = ?, headof = ? WHERE nama = ?";
+                        } else {
+                            st = "UPDATE " + now_jabatan + " SET nama = ?, divisi = ? WHERE nama = ?";
+                        }
                         PreparedStatement ps = conn.prepareStatement(st);
-                        ps.setString(1, now_jabatan);
-                        ps.setString(2, now_nama);
-                        ps.setString(3, now_divisi);
-                        ps.setString(4, prev_nama); 
+                        ps.setString(1, now_nama);
+                        ps.setString(2, now_divisi);
+                        ps.setString(3, prev_nama); 
                         ps.execute();
                     } else {
-                        String st = "DELETE FROM ? WHERE nama = '?'";
+                        String st = "DELETE FROM " + prev_jabatan + " WHERE nama = ?";
                         PreparedStatement ps = conn.prepareStatement(st);
-                        ps.setString(1, prev_jabatan);
-                        ps.setString(2, prev_nama);
+                        ps.setString(1, prev_nama);
                         ps.execute();
                         
-                        if ("manager".equals(now_jabatan)) {
+                        if ("Manager".equals(now_jabatan)) {
                             st = "INSERT INTO manager (nama, jabatan, headof) VALUES (?, ?, ?);";
                         } else {
                             st = "INSERT INTO subordinate (nama, jabatan, divisi) VALUES (?, ?, ?);";
@@ -103,7 +106,7 @@ public class popupLayer extends javax.swing.JFrame {
             dispose();
         }
     }
-    
+       
     private void launch(String nama, String jabatan, String div) {
         try {
             OKButton.addActionListener(new handler());
@@ -128,7 +131,7 @@ public class popupLayer extends javax.swing.JFrame {
     String now_nama, now_jabatan, now_divisi;
     String prev_nama, prev_jabatan, prev_divisi;
     
-    public popupLayer(String nama, String jabatan, String divisi) {
+    public editEmployeeLayer(String nama, String jabatan, String divisi) {
         initComponents();
         if ("".equals(nama)) isNew = true;
         prev_nama = nama;
