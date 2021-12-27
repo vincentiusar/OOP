@@ -9,34 +9,11 @@ public class Employee {
         this.setJabatan(jabatan);
     }
     
-    public void setID(String id){
-       if (id != null){
-           this.id = id;
-       }
-    }
-
-    public void setNama(String nama){
-      if (nama != null){
-           this.nama = nama;
-       }
-    }
-
-    public void setJabatan(String jabatan){
-      if (jabatan != null){
-           this.jabatan = jabatan;
-       }
-    }
-
-    public String getId() {
-      return this.id;
-    }
-
-    public String getNama(){
-      return this.nama;
-    }
-
-    public String getJabatan(){
-      return this.jabatan;
-    }
+    public void setID(String id)                { this.id = id; }
+    public void setNama(String nama)            { this.nama = nama; }
+    public void setJabatan(String jabatan)      { this.jabatan = jabatan; }
+    public String getId()                       { return this.id; }
+    public String getNama()                     { return this.nama; }
+    public String getJabatan()                  { return this.jabatan; }
 
 }

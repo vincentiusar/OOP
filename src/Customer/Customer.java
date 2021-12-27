@@ -9,19 +9,9 @@ public abstract class Customer {
         this.setName(name);
     }
     
-    private void setID(String id) {
-        this.id = id;
-    }
+    private void setID(String id) { this.id = id; }
+    public String getId() { return this.id; }
+    private void setName(String name) { this.name = name; }
+    public String getName() { return this.name; }
     
-    public String getId() {
-        return this.id;
-    }
-    
-    private void setName(String name) {
-        this.name = name;
-    }
-    
-    public String getName() {
-        return this.name;
-    }
 }

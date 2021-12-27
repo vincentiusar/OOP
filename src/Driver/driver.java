@@ -30,10 +30,11 @@ public class driver extends javax.swing.JFrame {
     static Statement stmt;
     static ResultSet rs;
     
-    DefaultListModel<String> listModel = new DefaultListModel<>();
-    ArrayList<Manager> Manager = new ArrayList<>();
-    ArrayList<Subordinate> Subordinate = new ArrayList<>();
-    ArrayList<subProject> subProject = new ArrayList<>();
+    DefaultListModel<String> listModel_1 = new DefaultListModel<>();
+    DefaultListModel<String> listModel_2 = new DefaultListModel<>();
+    ArrayList<Manager> ArrayListManager = new ArrayList<>();
+    ArrayList<Subordinate> ArrayListSubordinate = new ArrayList<>();
+    ArrayList<subProject> ArrayListsubProject = new ArrayList<>();
     
     /**
      * Creates new form java
@@ -42,10 +43,65 @@ public class driver extends javax.swing.JFrame {
         initComponents();
     }
 
+    private class selectHandler1 implements ListSelectionListener {
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                String namaSelected = ListManager.getSelectedValue().toString();
+                for (Manager M : ArrayListManager) {
+                    if (namaSelected.equals(M.getNama())) {
+                        showNamaLabel.setText(M.getNama());
+                        showJabatanLabel.setText(M.getJabatan());
+                        showDivisiLabel.setText(M.getHeadOf());
+                        nama = M.getNama();
+                        jabatan = M.getJabatan();
+                        div = M.getHeadOf();
+                    }
+                }
+            }
+        }
+    }
+    
+    private class selectHandler2 implements ListSelectionListener {
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                String namaSelected = ListPekerja.getSelectedValue().toString();
+                for (Subordinate M : ArrayListSubordinate) {
+                    if (namaSelected.equals(M.getNama())) {
+                        showNamaLabel.setText(M.getNama());
+                        showJabatanLabel.setText(M.getJabatan());
+                        showDivisiLabel.setText(M.getDivisi());
+                        nama = M.getNama();
+                        jabatan = M.getJabatan();
+                        div = M.getDivisi();
+                    }
+                }
+            }
+        }
+    }
+    
+    static String nama, jabatan, div;
+    
+    private class handler implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            popupLayer me;
+            if (e.getSource() == editManagerButton || e.getSource() == editPekerjaButton) {
+                me = new popupLayer(nama, jabatan, div);
+            } else {
+                nama = ""; div = ""; jabatan = "";
+                me = new popupLayer(nama, jabatan, div);
+            }
+            me.setVisible(true);
+        }
+    }
+    
     private void launch() {
         try {
             conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
             stmt = conn.createStatement();
+            newManagerButton.addActionListener(new handler());
+            newPekerjaButton.addActionListener(new handler());
+            editManagerButton.addActionListener(new handler());
+            editPekerjaButton.addActionListener(new handler());
             String st;
 //            String st = "INSERT INTO manager (nama, jabatan, headof) VALUES (?, ?, ?);";
 //            PreparedStatement ps = conn.prepareStatement(st);
@@ -61,15 +117,32 @@ public class driver extends javax.swing.JFrame {
             st = "SELECT * FROM manager";
             rs = stmt.executeQuery(st);
             while (rs.next()) {
-                String nama = rs.getString("nama");
-                listModel.addElement(nama);
+                nama = rs.getString("nama");
+                int id = rs.getInt("id");
+                jabatan = rs.getString("jabatan");
+                div = rs.getString("headof");
+                ArrayListManager.add(new Manager(Integer.toString(id), nama, jabatan, div));
+                listModel_1.addElement(nama);
+            }
+            st = "SELECT * FROM subordinate";
+            rs = stmt.executeQuery(st);
+            while (rs.next()) {
+                nama = rs.getString("nama");
+                int id = rs.getInt("id");
+                jabatan = rs.getString("jabatan");
+                div = rs.getString("divisi");
+                ArrayListSubordinate.add(new Subordinate(Integer.toString(id), nama, jabatan, div));
+                listModel_2.addElement(nama);
             }
             stmt.close();
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ListManager.setModel(listModel);
+        ListManager.setModel(listModel_1);
+        ListManager.addListSelectionListener(new selectHandler1());
+        ListPekerja.setModel(listModel_2);
+        ListPekerja.addListSelectionListener(new selectHandler2());
     }
     
     /**
@@ -92,7 +165,14 @@ public class driver extends javax.swing.JFrame {
         ListPekerja = new javax.swing.JList<>();
         newPekerjaButton = new javax.swing.JButton();
         newManagerButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        LabelNama = new javax.swing.JLabel();
+        LabelJabatan = new javax.swing.JLabel();
+        LabelDivisi = new javax.swing.JLabel();
+        showNamaLabel = new javax.swing.JLabel();
+        showJabatanLabel = new javax.swing.JLabel();
+        showDivisiLabel = new javax.swing.JLabel();
+        editManagerButton = new javax.swing.JButton();
+        editPekerjaButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         ListProjectLabel = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -128,7 +208,15 @@ public class driver extends javax.swing.JFrame {
 
         newManagerButton.setText("New Manager");
 
-        jLabel2.setText("Nama");
+        LabelNama.setText("Nama");
+
+        LabelJabatan.setText("Jabatan");
+
+        LabelDivisi.setText("Divisi");
+
+        editManagerButton.setText("Edit Manger");
+
+        editPekerjaButton.setText("Edit Pekerja");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -139,17 +227,25 @@ public class driver extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ListManagerLabel)
                     .addComponent(newManagerButton)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editManagerButton))
                 .addGap(67, 67, 67)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(editPekerjaButton)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ListPekerjaLabel)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(LabelNama)
+                            .addComponent(LabelJabatan)
+                            .addComponent(LabelDivisi)
+                            .addComponent(showNamaLabel)
+                            .addComponent(showJabatanLabel)
+                            .addComponent(showDivisiLabel)))
                     .addComponent(newPekerjaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(149, Short.MAX_VALUE))
+                .addContainerGap(138, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,12 +259,27 @@ public class driver extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
                         .addComponent(jScrollPane2))
-                    .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(LabelNama)
+                        .addGap(11, 11, 11)
+                        .addComponent(showNamaLabel)
+                        .addGap(26, 26, 26)
+                        .addComponent(LabelJabatan)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(showJabatanLabel)
+                        .addGap(32, 32, 32)
+                        .addComponent(LabelDivisi)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(showDivisiLabel)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(newPekerjaButton)
                     .addComponent(newManagerButton))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(editManagerButton)
+                    .addComponent(editPekerjaButton))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         employeeTabs.addTab("Employee", jPanel1);
@@ -294,16 +405,20 @@ public class driver extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel LabelDivisi;
+    private javax.swing.JLabel LabelJabatan;
+    private javax.swing.JLabel LabelNama;
     private javax.swing.JList<String> ListManager;
     private javax.swing.JLabel ListManagerLabel;
     private javax.swing.JList<String> ListPekerja;
     private javax.swing.JLabel ListPekerjaLabel;
     private javax.swing.JLabel ListProjectLabel;
+    private javax.swing.JButton editManagerButton;
+    private javax.swing.JButton editPekerjaButton;
     private javax.swing.JButton editProjectButton;
     private javax.swing.JTabbedPane employeeTabs;
     private javax.swing.JButton hapusProjectButton;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -314,5 +429,8 @@ public class driver extends javax.swing.JFrame {
     private javax.swing.JButton newManagerButton;
     private javax.swing.JButton newPekerjaButton;
     private javax.swing.JButton newProjectButton;
+    private javax.swing.JLabel showDivisiLabel;
+    private javax.swing.JLabel showJabatanLabel;
+    private javax.swing.JLabel showNamaLabel;
     // End of variables declaration//GEN-END:variables
 }

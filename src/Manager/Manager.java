@@ -9,13 +9,7 @@ public class Manager extends Employee{
         this.setHeadOf(headOf);
     }
 
-    public String getHeadOf() {
-        return headOf;
-    }
-
-    public void setHeadOf(String headOf) {
-        this.headOf = headOf;
-    }
-    
+    public String getHeadOf()               { return headOf; }
+    public void setHeadOf(String headOf)    { this.headOf = headOf; }
     
 }

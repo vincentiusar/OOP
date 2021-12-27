@@ -9,12 +9,7 @@ public class Subordinate extends Employee{
         this.setDivisi(divisi);
     }
 
-    public String getDivisi() {
-        return divisi;
-    }
-
-    public void setDivisi(String divisi) {
-        this.divisi = divisi;
-    }
+    public String getDivisi()               { return divisi; }
+    public void setDivisi(String divisi)    { this.divisi = divisi; }
     
 }
