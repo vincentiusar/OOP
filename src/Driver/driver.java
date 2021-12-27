@@ -32,9 +32,10 @@ public class driver extends javax.swing.JFrame {
     
     DefaultListModel<String> listModel_1;
     DefaultListModel<String> listModel_2;
+    DefaultListModel<String> listModel_3;
     ArrayList<Manager> ArrayListManager;
     ArrayList<Subordinate> ArrayListSubordinate;
-    ArrayList<subProject> ArrayListsubProject;
+    ArrayList<subProject> ArrayListProject;
     
     /**
      * Creates new form java
@@ -86,6 +87,8 @@ public class driver extends javax.swing.JFrame {
     }
     
     static String nama, jabatan, div;
+    static LocalDate timeStart, timeEnd;
+    static String worker1, worker2, worker3, worker4, worker5;
     
     private class handler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -103,7 +106,7 @@ public class driver extends javax.swing.JFrame {
             
             ArrayListManager.clear();
             ArrayListSubordinate.clear();
-            ArrayListsubProject.clear();
+            ArrayListProject.clear();
         }
     }
     
@@ -117,7 +120,7 @@ public class driver extends javax.swing.JFrame {
             
             ArrayListManager.clear();
             ArrayListSubordinate.clear();
-            ArrayListsubProject.clear();
+            ArrayListProject.clear();
         }
     }
     
@@ -126,9 +129,10 @@ public class driver extends javax.swing.JFrame {
         ListPekerja.addListSelectionListener(new selectHandler2());
         listModel_1 = new DefaultListModel<>();
         listModel_2 = new DefaultListModel<>();
+        listModel_3 = new DefaultListModel<>();
         ArrayListManager = new ArrayList<>();
         ArrayListSubordinate = new ArrayList<>();
-        ArrayListsubProject = new ArrayList<>();
+        ArrayListProject = new ArrayList<>();
         try {
             conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
             stmt = conn.createStatement();
@@ -154,12 +158,27 @@ public class driver extends javax.swing.JFrame {
                 ArrayListSubordinate.add(new Subordinate(Integer.toString(id), nama, jabatan, div));
                 listModel_2.addElement(nama);
             }
+            st = "SELECT * FROM project";
+            rs = stmt.executeQuery(st);
+            while (rs.next()) {
+                nama = rs.getString("nama");
+                int id = rs.getInt("id_project");
+                timeStart = rs.getDate("timeStart").toLocalDate();
+                timeEnd = rs.getDate("timeEnd").toLocalDate();
+                worker1 = rs.getString("worker1");
+                worker2 = rs.getString("worker2");
+                worker3 = rs.getString("worker3");
+                worker4 = rs.getString("worker4");
+                worker5 = rs.getString("worker5");
+                ArrayListSubordinate.add(new Subordinate(Integer.toString(id), nama, jabatan, div));
+                listModel_2.addElement(nama);
+            }
             stmt.close();
             conn.close();
             
             ListManager.setModel(listModel_1);
             ListPekerja.setModel(listModel_2);
-            
+            ListProject.setModel(listModel_3);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -206,7 +225,7 @@ public class driver extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         ListProjectLabel = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        ListProject = new javax.swing.JList<>();
         newProjectButton = new javax.swing.JButton();
         editProjectButton = new javax.swing.JButton();
         hapusProjectButton = new javax.swing.JButton();
@@ -325,16 +344,16 @@ public class driver extends javax.swing.JFrame {
 
         ListProjectLabel.setText("List Project");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        ListProject.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane3.setViewportView(jList1);
+        jScrollPane3.setViewportView(ListProject);
 
         newProjectButton.setText("New Project");
 
-        editProjectButton.setText("EditProject");
+        editProjectButton.setText("Edit Project");
 
         hapusProjectButton.setText("Hapus Project");
 
@@ -453,6 +472,7 @@ public class driver extends javax.swing.JFrame {
     private javax.swing.JLabel ListManagerLabel;
     private javax.swing.JList<String> ListPekerja;
     private javax.swing.JLabel ListPekerjaLabel;
+    private javax.swing.JList<String> ListProject;
     private javax.swing.JLabel ListProjectLabel;
     private javax.swing.JButton editManagerButton;
     private javax.swing.JButton editPekerjaButton;
@@ -461,7 +481,6 @@ public class driver extends javax.swing.JFrame {
     private javax.swing.JButton hapusDataButton;
     private javax.swing.JButton hapusProjectButton;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
