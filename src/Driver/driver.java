@@ -30,11 +30,11 @@ public class driver extends javax.swing.JFrame {
     static Statement stmt;
     static ResultSet rs;
     
-    DefaultListModel<String> listModel_1 = new DefaultListModel<>();
-    DefaultListModel<String> listModel_2 = new DefaultListModel<>();
-    ArrayList<Manager> ArrayListManager = new ArrayList<>();
-    ArrayList<Subordinate> ArrayListSubordinate = new ArrayList<>();
-    ArrayList<subProject> ArrayListsubProject = new ArrayList<>();
+    DefaultListModel<String> listModel_1;
+    DefaultListModel<String> listModel_2;
+    ArrayList<Manager> ArrayListManager;
+    ArrayList<Subordinate> ArrayListSubordinate;
+    ArrayList<subProject> ArrayListsubProject;
     
     /**
      * Creates new form java
@@ -91,17 +91,20 @@ public class driver extends javax.swing.JFrame {
                 me = new popupLayer(nama, jabatan, div);
             }
             me.setVisible(true);
+            loadDB();
         }
     }
     
-    private void launch() {
+    private void loadDB() {
+        listModel_1 = new DefaultListModel<>();
+        listModel_2 = new DefaultListModel<>();
+        ArrayListManager = new ArrayList<>();
+        ArrayListSubordinate = new ArrayList<>();
+        ArrayListsubProject = new ArrayList<>();
         try {
             conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
             stmt = conn.createStatement();
-            newManagerButton.addActionListener(new handler());
-            newPekerjaButton.addActionListener(new handler());
-            editManagerButton.addActionListener(new handler());
-            editPekerjaButton.addActionListener(new handler());
+  
             String st;
 //            String st = "INSERT INTO manager (nama, jabatan, headof) VALUES (?, ?, ?);";
 //            PreparedStatement ps = conn.prepareStatement(st);
@@ -139,6 +142,14 @@ public class driver extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    private void launch() {
+        newManagerButton.addActionListener(new handler());
+        newPekerjaButton.addActionListener(new handler());
+        editManagerButton.addActionListener(new handler());
+        editPekerjaButton.addActionListener(new handler());
+        loadDB();
         ListManager.setModel(listModel_1);
         ListManager.addListSelectionListener(new selectHandler1());
         ListPekerja.setModel(listModel_2);

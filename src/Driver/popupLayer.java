@@ -19,7 +19,7 @@ import java.sql.Statement;
  */
 public class popupLayer extends javax.swing.JFrame {
 
-    static final String DB_URL = "jdbc:mysql://localhost/test";
+    static final String DB_URL = "jdbc:mysql://localhost/projectmanagementtubes";
     static final String DB_USER = "root";
     static final String DB_PASS = "";
     static Connection conn;
@@ -36,15 +36,55 @@ public class popupLayer extends javax.swing.JFrame {
         
         public void actionPerformed(ActionEvent e) {
             try {
+                stmt = conn.createStatement();
+                now_nama = namaTextField.getText().trim();
+                now_jabatan = "";
+                if (radioManager.isSelected()) {
+                    now_jabatan = "Manager";
+                } else if (radioSubor.isSelected()) {
+                    now_jabatan = "subordinate";
+                }
+                now_divisi = divTextField.getText().trim();
+                
                 if (isNew) {
-                    String st = "INSERT INTO manager (nama, jabatan, headof) VALUES (?, ?, ?);";
+                    String st = "";
+                    if ("Manager".equals(now_jabatan)) {
+                        st = "INSERT INTO manager (nama, jabatan, headof) VALUES (?, ?, ?);";
+                    } else {
+                        st = "INSERT INTO subordinate (nama, jabatan, divisi) VALUES (?, ?, ?);";
+                    }
                     PreparedStatement ps = conn.prepareStatement(st);
-                    ps.setString(1, "kamu");
-                    ps.setString(2, "Manager");
-                    ps.setString(3, "makan");
+                    ps.setString(1, now_nama);
+                    ps.setString(2, now_jabatan);
+                    ps.setString(3, now_divisi);
                     ps.execute();
                 } else {
-                    
+                    if (prev_jabatan.equals(now_jabatan)) {
+                        String st = "UPDATE ? SET nama = ?, divisi = ? WHERE nama = ?";
+                        PreparedStatement ps = conn.prepareStatement(st);
+                        ps.setString(1, now_jabatan);
+                        ps.setString(2, now_nama);
+                        ps.setString(3, now_divisi);
+                        ps.setString(4, prev_nama); 
+                        ps.execute();
+                    } else {
+                        String st = "DELETE FROM ? WHERE nama = '?'";
+                        PreparedStatement ps = conn.prepareStatement(st);
+                        ps.setString(1, prev_jabatan);
+                        ps.setString(2, prev_nama);
+                        ps.execute();
+                        
+                        if ("manager".equals(now_jabatan)) {
+                            st = "INSERT INTO manager (nama, jabatan, headof) VALUES (?, ?, ?);";
+                        } else {
+                            st = "INSERT INTO subordinate (nama, jabatan, divisi) VALUES (?, ?, ?);";
+                        }
+                        ps = conn.prepareStatement(st);
+                        ps.setString(1, now_nama);
+                        ps.setString(2, now_jabatan);
+                        ps.setString(3, now_divisi);
+                        ps.execute();
+                    }
                 }
             } catch (Exception a) {
                 a.printStackTrace();
@@ -75,24 +115,21 @@ public class popupLayer extends javax.swing.JFrame {
             divTextField.setText(div);
             
             conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
-            stmt = conn.createStatement();
-            nama = namaTextField.getText().trim();
-            jabatan = "";
-            if (radioManager.isSelected()) {
-                jabatan = "Manager";
-            } else if (radioSubor.isSelected()) {
-                jabatan = "subordinate";
-            }
             
-            div = divTextField.getText().trim();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
+    String now_nama, now_jabatan, now_divisi;
+    String prev_nama, prev_jabatan, prev_divisi;
+    
     public popupLayer(String nama, String jabatan, String divisi) {
         initComponents();
         if ("".equals(nama)) isNew = true;
+        prev_nama = nama;
+        prev_jabatan = jabatan;
+        prev_divisi = divisi;
         launch(nama, jabatan, divisi);
     }
     /**
@@ -104,6 +141,7 @@ public class popupLayer extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         namaLabel = new javax.swing.JLabel();
         jabatanLabel = new javax.swing.JLabel();
         radioManager = new javax.swing.JRadioButton();
@@ -120,8 +158,10 @@ public class popupLayer extends javax.swing.JFrame {
 
         jabatanLabel.setText("Jabatan");
 
+        buttonGroup1.add(radioManager);
         radioManager.setText("Manager");
 
+        buttonGroup1.add(radioSubor);
         radioSubor.setText("Subordinate");
 
         OKButton.setText("OK");
@@ -174,7 +214,7 @@ public class popupLayer extends javax.swing.JFrame {
                         .addGap(35, 35, 35)
                         .addComponent(divTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cancelButton)
                     .addComponent(OKButton))
                 .addContainerGap(70, Short.MAX_VALUE))
@@ -189,6 +229,7 @@ public class popupLayer extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton OKButton;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cancelButton;
     private javax.swing.JTextField divTextField;
     private javax.swing.JLabel jabatanLabel;
