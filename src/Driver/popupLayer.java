@@ -1,11 +1,13 @@
 package Driver;
 
+import static Driver.driver.me;
 import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.SwingUtilities;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -89,6 +91,8 @@ public class popupLayer extends javax.swing.JFrame {
             } catch (Exception a) {
                 a.printStackTrace();
             } finally {
+                me.loadDB();
+                SwingUtilities.updateComponentTreeUI(me);
                 dispose();
             }
         }

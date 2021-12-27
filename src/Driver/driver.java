@@ -83,19 +83,18 @@ public class driver extends javax.swing.JFrame {
     
     private class handler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            popupLayer me;
+            popupLayer mee;
             if (e.getSource() == editManagerButton || e.getSource() == editPekerjaButton) {
-                me = new popupLayer(nama, jabatan, div);
+                mee = new popupLayer(nama, jabatan, div);
             } else {
                 nama = ""; div = ""; jabatan = "";
-                me = new popupLayer(nama, jabatan, div);
+                mee = new popupLayer(nama, jabatan, div);
             }
-            me.setVisible(true);
-            loadDB();
+            mee.setVisible(true);
         }
     }
     
-    private void loadDB() {
+    public void loadDB() {
         listModel_1 = new DefaultListModel<>();
         listModel_2 = new DefaultListModel<>();
         ArrayListManager = new ArrayList<>();
@@ -139,6 +138,10 @@ public class driver extends javax.swing.JFrame {
             }
             stmt.close();
             conn.close();
+            ListManager.setModel(listModel_1);
+            ListManager.addListSelectionListener(new selectHandler1());
+            ListPekerja.setModel(listModel_2);
+            ListPekerja.addListSelectionListener(new selectHandler2());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -150,10 +153,6 @@ public class driver extends javax.swing.JFrame {
         editManagerButton.addActionListener(new handler());
         editPekerjaButton.addActionListener(new handler());
         loadDB();
-        ListManager.setModel(listModel_1);
-        ListManager.addListSelectionListener(new selectHandler1());
-        ListPekerja.setModel(listModel_2);
-        ListPekerja.addListSelectionListener(new selectHandler2());
     }
     
     /**
@@ -384,6 +383,8 @@ public class driver extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
+    public static driver me;
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -410,7 +411,7 @@ public class driver extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        driver me = new driver();
+        me = new driver();
         me.setVisible(true);
         me.launch();
     }
