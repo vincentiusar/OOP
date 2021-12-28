@@ -138,7 +138,7 @@
                               <Component id="hapusDataButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="67" max="32767" attributes="0"/>
+                      <EmptySpace pref="72" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -266,7 +266,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="ListProjectLabel" min="-2" max="-2" attributes="0"/>
@@ -283,7 +283,28 @@
                               <Component id="hapusProjectButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="374" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="pekerjaLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="managerLabel" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="namaProjectLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="showTanggalAkhir" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="statusLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="subProjectLabel" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Component id="showNamaProject" min="-2" max="-2" attributes="0"/>
+                          <Component id="showTanggalMulai" min="-2" max="-2" attributes="0"/>
+                          <Component id="showManager" min="-2" max="-2" attributes="0"/>
+                          <Component id="tanggalMulaiLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="deadlineLabel" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="127" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -291,17 +312,46 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="ListProjectLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane3" min="-2" pref="173" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="newProjectButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="editProjectButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="ListProjectLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="namaProjectLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="subProjectLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="hapusProjectButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="69" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jScrollPane3" min="-2" pref="173" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="newProjectButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="editProjectButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="hapusProjectButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                              <Component id="showNamaProject" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="tanggalMulaiLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="showTanggalMulai" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="deadlineLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="statusLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="showTanggalAkhir" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="managerLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="showManager" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="pekerjaLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="21" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -352,6 +402,61 @@
                 <Property name="text" type="java.lang.String" value="Hapus Project"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JLabel" name="namaProjectLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Nama Project"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="tanggalMulaiLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Tanggal Mulai"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="deadlineLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Deadline"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="pekerjaLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Pekerja"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="managerLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Manager"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="subProjectLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="SubProject"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="statusLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Status"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="showNamaProject">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="null"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="showTanggalMulai">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="null"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="showTanggalAkhir">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="null"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="showManager">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="null"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel3">
@@ -371,7 +476,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="342" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="347" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>

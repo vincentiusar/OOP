@@ -5,6 +5,7 @@
  */
 package Driver;
 
+import Customer.Customer;
 import Manager.Manager;
 import Project.Project;
 import Subordinate.Subordinate;
@@ -34,9 +35,12 @@ public class driver extends javax.swing.JFrame {
     DefaultListModel<String> listModel_1;
     DefaultListModel<String> listModel_2;
     DefaultListModel<String> listModel_3;
+    DefaultListModel<String> listModel_4;
+    ArrayList<Customer> ArrayListCustomer;
     ArrayList<Manager> ArrayListManager;
     ArrayList<Subordinate> ArrayListSubordinate;
     ArrayList<Project> ArrayListProject;
+    ArrayList<subProject> ArrayListSubProject;
     
     /**
      * Creates new form java
@@ -81,6 +85,22 @@ public class driver extends javax.swing.JFrame {
                         nama = M.getNama();
                         jabatan = M.getJabatan();
                         div = M.getDivisi();
+                    }
+                }
+            }
+        }
+    }
+    
+    private class selectHandlerProject implements ListSelectionListener {
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                String namaSelected = ListProject.getSelectedValue().toString();
+                for (Project P : ArrayListProject) {
+                    if (namaSelected.equals(P.getNama())) {
+                        showNamaProject.setText(P.getNama());
+                        showTanggalMulai.setText(P.getDateStart().toString());
+                        showTanggalAkhir.setText(P.getDateEnd().toString());
+                        showManager.setText(P.getManager().getNama());
                     }
                 }
             }
@@ -142,18 +162,20 @@ public class driver extends javax.swing.JFrame {
     }
     
     public void loadDB() {
-        ListManager.addListSelectionListener(new selectHandler1());
-        ListPekerja.addListSelectionListener(new selectHandler2());
         listModel_1 = new DefaultListModel<>();
         listModel_2 = new DefaultListModel<>();
         listModel_3 = new DefaultListModel<>();
         ArrayListManager = new ArrayList<>();
         ArrayListSubordinate = new ArrayList<>();
         ArrayListProject = new ArrayList<>();
+        ArrayListSubProject = new ArrayList<>();
+        ArrayListCustomer = new ArrayList<>();
+        
         try {
             conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
             stmt = conn.createStatement();
-  
+            
+            // load manager
             String st;
             st = "SELECT * FROM manager";
             rs = stmt.executeQuery(st);
@@ -165,6 +187,8 @@ public class driver extends javax.swing.JFrame {
                 ArrayListManager.add(new Manager(Integer.toString(id), nama, jabatan, div));
                 listModel_1.addElement(nama);
             }
+            
+            // load subordinate
             st = "SELECT * FROM subordinate";
             rs = stmt.executeQuery(st);
             while (rs.next()) {
@@ -175,67 +199,82 @@ public class driver extends javax.swing.JFrame {
                 ArrayListSubordinate.add(new Subordinate(Integer.toString(id), nama, jabatan, div));
                 listModel_2.addElement(nama);
             }
+            
+            int id = 0;
+            
             st = "SELECT * FROM customer";
             rs = stmt.executeQuery(st);
-            
             while (rs.next()) {
-                int id_cus = 0;
-                int id = rs.getInt("id_project");
-                
-                String st2 = "SELECT * FROM customer WHERE id_project = " + id;
-                rs2 = stmt2.executeQuery(st2);
-                while (rs2.next()) {
-                    id_cus = rs2.getInt("id_cus");
-                    nama_cus = rs2.getString("nama");
-                }
+                int id_cus = rs.getInt("id_cus");
+                nama_cus = rs.getString("nama");
+                int id_proj = rs.getInt("id_project");
+                ArrayListCustomer.add(new Customer(Integer.toString(id_cus), nama_cus, Integer.toString(id_proj)));
+            }
+            
+            st = "SELECT * FROM subproject";
+            rs = stmt.executeQuery(st);
+            while (rs.next()) {
+                id = rs.getInt("id");
+                nama = rs.getString("nama");
+                boolean isDone = rs.getBoolean("isDone");
+                int id_proj = rs.getInt("id_project");
+                ArrayListSubProject.add(new subProject(Integer.toString(id), nama, isDone, Integer.toString(id_proj)));
+            }
+            
+            ArrayList<Subordinate> subor = new ArrayList<>();
+            ArrayList<subProject> sub = new ArrayList<>();
+            
+            st = "SELECT * FROM project";
+            rs = stmt.executeQuery(st);
+            while (rs.next()) {
+                id = rs.getInt("id_project");
+
                 nama = rs.getString("nama");
                 timeStart = rs.getDate("timeStart").toLocalDate();
                 timeEnd = rs.getDate("timeEnd").toLocalDate();
                 System.out.println(nama);
-//                String tmp = rs.getString("manager");
-//                st = "SELECT id FROM manager where nama = " + tmp;
-//                rs2 = stmt2.executeQuery(st);
-//                while (rs2.next()) {
-//                    String nama_manager = rs2.getString("nama");
-//                    int id_m = rs2.getInt("id");
-//                    jabatan = rs2.getString("jabatan");
-//                    div = rs2.getString("headof");
-//                    manager = new Manager(Integer.toString(id_m), nama_manager, jabatan, div);
-//                }
-//                worker = rs.getString("worker");
-//                ArrayList<String> w = toArrayString(worker);
-//                ArrayList<Subordinate> subor = new ArrayList<>();
-//                
-//                for (String str : w) {
-//                    st = "SELECT * FROM subordinate WHERE nama = " + str;
-//                    rs2 = stmt2.executeQuery(st);
-//                    while (rs2.next()) {
-//                        int id_tmp = rs2.getInt("id");
-//                        String nama_tmp = rs2.getString("nama");
-//                        String jabatan_tmp = rs2.getString("jabatan");
-//                        String divisi_tmp = rs2.getString("divisi");
-//                        subor.add(new Subordinate(Integer.toString(id_tmp), nama_tmp, jabatan_tmp, divisi_tmp));
-//                    }
-//                }
-//                
-//                subProject = rs.getString(subProject);
-//                ArrayList<String> s = toArrayString(subProject);
-//                ArrayList<subProject> sub = new ArrayList<>();
-//                for (String str : s) {
-//                    st = "SELECT * FROM subproject WHERE nama = " + str;
-//                    rs2 = stmt2.executeQuery(st);
-//                    while (rs2.next()) {
-//                        int id_tmp = rs2.getInt("id");
-//                        String nama_tmp = rs2.getString("nama");
-//                        boolean isDone = rs2.getBoolean("isDone");
-//                        
-//                        sub.add(new subProject(Integer.toString(id_tmp), nama_tmp, isDone, Integer.toString(id)));
-//                    }
-//                }
-//                
-//                ArrayListProject.add(new Project(Integer.toString(id_cus), nama_cus, Integer.toString(id), nama, timeStart, timeEnd, manager, subor, sub));
+                String tmp = rs.getString("manager");
+                
+                for (Manager m : ArrayListManager) {
+                    if (tmp.equals(m.getNama())) {
+                        manager = m;
+                        break;
+                    }
+                }
+                
+                worker = rs.getString("worker");
+                ArrayList<String> w = toArrayString(worker);
+                
+                for (String str : w) {
+                    for (Subordinate s : ArrayListSubordinate) {
+                        if (str.equals(s.getNama())) {
+                            subor.add(s);
+                        }
+                    }
+                }
+
+                String subproject = rs.getString("subproject");
+                ArrayList<String> s = toArrayString(subproject);
+                for (String str : s) {
+                    for (subProject S : ArrayListSubProject) {
+                        if (str.equals(S.getNamaSub())) {
+                            sub.add(S);
+                        }
+                    }
+                }
+                
+                String id_cus = "", nama_cus = "";
+                
+                for (Customer c : ArrayListCustomer) {
+                    if (Integer.toString(id).equals(c.getId_proj())) {
+                        id_cus = c.getId();
+                        nama_cus = c.getName();
+                    }
+                }
+                ArrayListProject.add(new Project(id_cus, nama_cus, Integer.toString(id), nama, timeStart, timeEnd, manager, subor, sub));
                 listModel_3.addElement(nama);
             }
+            
             stmt.close();
             conn.close();
             
@@ -248,6 +287,9 @@ public class driver extends javax.swing.JFrame {
     }
     
     private void launch() {
+        ListManager.addListSelectionListener(new selectHandler1());
+        ListPekerja.addListSelectionListener(new selectHandler2());
+        ListProject.addListSelectionListener(new selectHandlerProject());
         newManagerButton.addActionListener(new handler());
         newPekerjaButton.addActionListener(new handler());
         editManagerButton.addActionListener(new handler());
@@ -292,6 +334,17 @@ public class driver extends javax.swing.JFrame {
         newProjectButton = new javax.swing.JButton();
         editProjectButton = new javax.swing.JButton();
         hapusProjectButton = new javax.swing.JButton();
+        namaProjectLabel = new javax.swing.JLabel();
+        tanggalMulaiLabel = new javax.swing.JLabel();
+        deadlineLabel = new javax.swing.JLabel();
+        pekerjaLabel = new javax.swing.JLabel();
+        managerLabel = new javax.swing.JLabel();
+        subProjectLabel = new javax.swing.JLabel();
+        statusLabel = new javax.swing.JLabel();
+        showNamaProject = new javax.swing.JLabel();
+        showTanggalMulai = new javax.swing.JLabel();
+        showTanggalAkhir = new javax.swing.JLabel();
+        showManager = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
 
         jLabel1.setText("jLabel1");
@@ -339,15 +392,11 @@ public class driver extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ListManagerLabel)
-                            .addComponent(newManagerButton)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(67, 67, 67))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(editManagerButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                    .addComponent(ListManagerLabel)
+                    .addComponent(newManagerButton)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editManagerButton))
+                .addGap(67, 67, 67)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(newPekerjaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -400,7 +449,7 @@ public class driver extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(editPekerjaButton)
                         .addComponent(hapusDataButton)))
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         employeeTabs.addTab("Employee", jPanel1);
@@ -420,6 +469,28 @@ public class driver extends javax.swing.JFrame {
 
         hapusProjectButton.setText("Hapus Project");
 
+        namaProjectLabel.setText("Nama Project");
+
+        tanggalMulaiLabel.setText("Tanggal Mulai");
+
+        deadlineLabel.setText("Deadline");
+
+        pekerjaLabel.setText("Pekerja");
+
+        managerLabel.setText("Manager");
+
+        subProjectLabel.setText("SubProject");
+
+        statusLabel.setText("Status");
+
+        showNamaProject.setText("null");
+
+        showTanggalMulai.setText("null");
+
+        showTanggalAkhir.setText("null");
+
+        showManager.setText("null");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -438,22 +509,63 @@ public class driver extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(70, 70, 70)
                         .addComponent(hapusProjectButton)))
-                .addContainerGap(374, Short.MAX_VALUE))
+                .addGap(32, 32, 32)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pekerjaLabel)
+                    .addComponent(managerLabel)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(namaProjectLabel)
+                            .addComponent(showTanggalAkhir))
+                        .addGap(100, 100, 100)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(statusLabel)
+                            .addComponent(subProjectLabel)))
+                    .addComponent(showNamaProject)
+                    .addComponent(showTanggalMulai)
+                    .addComponent(showManager)
+                    .addComponent(tanggalMulaiLabel)
+                    .addComponent(deadlineLabel))
+                .addContainerGap(127, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ListProjectLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(newProjectButton)
-                    .addComponent(editProjectButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(hapusProjectButton)
-                .addContainerGap(69, Short.MAX_VALUE))
+                    .addComponent(ListProjectLabel)
+                    .addComponent(namaProjectLabel)
+                    .addComponent(subProjectLabel))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(59, 59, 59)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(newProjectButton)
+                            .addComponent(editProjectButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(hapusProjectButton))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(showNamaProject)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tanggalMulaiLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(showTanggalMulai)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(deadlineLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(statusLabel)
+                            .addComponent(showTanggalAkhir))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(managerLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(showManager)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(pekerjaLabel)))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         employeeTabs.addTab("Project", jPanel2);
@@ -466,7 +578,7 @@ public class driver extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 342, Short.MAX_VALUE)
+            .addGap(0, 347, Short.MAX_VALUE)
         );
 
         employeeTabs.addTab("tab3", jPanel3);
@@ -537,6 +649,7 @@ public class driver extends javax.swing.JFrame {
     private javax.swing.JLabel ListPekerjaLabel;
     private javax.swing.JList<String> ListProject;
     private javax.swing.JLabel ListProjectLabel;
+    private javax.swing.JLabel deadlineLabel;
     private javax.swing.JButton editManagerButton;
     private javax.swing.JButton editPekerjaButton;
     private javax.swing.JButton editProjectButton;
@@ -550,11 +663,21 @@ public class driver extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel managerLabel;
+    private javax.swing.JLabel namaProjectLabel;
     private javax.swing.JButton newManagerButton;
     private javax.swing.JButton newPekerjaButton;
     private javax.swing.JButton newProjectButton;
+    private javax.swing.JLabel pekerjaLabel;
     private javax.swing.JLabel showDivisiLabel;
     private javax.swing.JLabel showJabatanLabel;
+    private javax.swing.JLabel showManager;
     private javax.swing.JLabel showNamaLabel;
+    private javax.swing.JLabel showNamaProject;
+    private javax.swing.JLabel showTanggalAkhir;
+    private javax.swing.JLabel showTanggalMulai;
+    private javax.swing.JLabel statusLabel;
+    private javax.swing.JLabel subProjectLabel;
+    private javax.swing.JLabel tanggalMulaiLabel;
     // End of variables declaration//GEN-END:variables
 }
