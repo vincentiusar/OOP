@@ -6,6 +6,7 @@
 package Driver;
 
 import Manager.Manager;
+import Project.Project;
 import Subordinate.Subordinate;
 import subProject.subProject;
 import java.awt.event.ActionEvent;
@@ -27,15 +28,15 @@ public class driver extends javax.swing.JFrame {
     static final String DB_USER = "root";
     static final String DB_PASS = "";
     static Connection conn;
-    static Statement stmt;
-    static ResultSet rs;
+    static Statement stmt, stmt2;
+    static ResultSet rs, rs2;
     
     DefaultListModel<String> listModel_1;
     DefaultListModel<String> listModel_2;
     DefaultListModel<String> listModel_3;
     ArrayList<Manager> ArrayListManager;
     ArrayList<Subordinate> ArrayListSubordinate;
-    ArrayList<subProject> ArrayListProject;
+    ArrayList<Project> ArrayListProject;
     
     /**
      * Creates new form java
@@ -86,9 +87,10 @@ public class driver extends javax.swing.JFrame {
         }
     }
     
-    static String nama, jabatan, div;
+    static String nama, jabatan, div, nama_cus;
     static LocalDate timeStart, timeEnd;
-    static String worker1, worker2, worker3, worker4, worker5;
+    static String worker, subProject;
+    static Manager manager;
     
     private class handler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -122,6 +124,21 @@ public class driver extends javax.swing.JFrame {
             ArrayListSubordinate.clear();
             ArrayListProject.clear();
         }
+    }
+    
+    private ArrayList<String> toArrayString(String target) {
+        ArrayList<String> res = new ArrayList<>();
+        for (int i = 0; i < target.length(); i++) {
+            String result = "";
+            if (target.charAt(i) == '\"' && "".equals(result)) {
+                i++;
+                result += target.charAt(i);
+            } else if (target.charAt(i) == '\"' && !"".equals(result)) {
+                res.add(result);
+                result = "";
+            }
+        }
+        return res;
     }
     
     public void loadDB() {
@@ -158,20 +175,66 @@ public class driver extends javax.swing.JFrame {
                 ArrayListSubordinate.add(new Subordinate(Integer.toString(id), nama, jabatan, div));
                 listModel_2.addElement(nama);
             }
-            st = "SELECT * FROM project";
+            st = "SELECT * FROM customer";
             rs = stmt.executeQuery(st);
+            
             while (rs.next()) {
-                nama = rs.getString("nama");
+                int id_cus = 0;
                 int id = rs.getInt("id_project");
+                
+                String st2 = "SELECT * FROM customer WHERE id_project = " + id;
+                rs2 = stmt2.executeQuery(st2);
+                while (rs2.next()) {
+                    id_cus = rs2.getInt("id_cus");
+                    nama_cus = rs2.getString("nama");
+                }
+                nama = rs.getString("nama");
                 timeStart = rs.getDate("timeStart").toLocalDate();
                 timeEnd = rs.getDate("timeEnd").toLocalDate();
-                worker1 = rs.getString("worker1");
-                worker2 = rs.getString("worker2");
-                worker3 = rs.getString("worker3");
-                worker4 = rs.getString("worker4");
-                worker5 = rs.getString("worker5");
-                ArrayListSubordinate.add(new Subordinate(Integer.toString(id), nama, jabatan, div));
-                listModel_2.addElement(nama);
+                System.out.println(nama);
+//                String tmp = rs.getString("manager");
+//                st = "SELECT id FROM manager where nama = " + tmp;
+//                rs2 = stmt2.executeQuery(st);
+//                while (rs2.next()) {
+//                    String nama_manager = rs2.getString("nama");
+//                    int id_m = rs2.getInt("id");
+//                    jabatan = rs2.getString("jabatan");
+//                    div = rs2.getString("headof");
+//                    manager = new Manager(Integer.toString(id_m), nama_manager, jabatan, div);
+//                }
+//                worker = rs.getString("worker");
+//                ArrayList<String> w = toArrayString(worker);
+//                ArrayList<Subordinate> subor = new ArrayList<>();
+//                
+//                for (String str : w) {
+//                    st = "SELECT * FROM subordinate WHERE nama = " + str;
+//                    rs2 = stmt2.executeQuery(st);
+//                    while (rs2.next()) {
+//                        int id_tmp = rs2.getInt("id");
+//                        String nama_tmp = rs2.getString("nama");
+//                        String jabatan_tmp = rs2.getString("jabatan");
+//                        String divisi_tmp = rs2.getString("divisi");
+//                        subor.add(new Subordinate(Integer.toString(id_tmp), nama_tmp, jabatan_tmp, divisi_tmp));
+//                    }
+//                }
+//                
+//                subProject = rs.getString(subProject);
+//                ArrayList<String> s = toArrayString(subProject);
+//                ArrayList<subProject> sub = new ArrayList<>();
+//                for (String str : s) {
+//                    st = "SELECT * FROM subproject WHERE nama = " + str;
+//                    rs2 = stmt2.executeQuery(st);
+//                    while (rs2.next()) {
+//                        int id_tmp = rs2.getInt("id");
+//                        String nama_tmp = rs2.getString("nama");
+//                        boolean isDone = rs2.getBoolean("isDone");
+//                        
+//                        sub.add(new subProject(Integer.toString(id_tmp), nama_tmp, isDone, Integer.toString(id)));
+//                    }
+//                }
+//                
+//                ArrayListProject.add(new Project(Integer.toString(id_cus), nama_cus, Integer.toString(id), nama, timeStart, timeEnd, manager, subor, sub));
+                listModel_3.addElement(nama);
             }
             stmt.close();
             conn.close();
