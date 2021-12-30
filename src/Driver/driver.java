@@ -54,18 +54,22 @@ public class driver extends javax.swing.JFrame {
     
     private class selectHandler1 implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
-            if (!e.getValueIsAdjusting()) {
-                String namaSelected = ListManager.getSelectedValue().toString();
-                for (Manager M : ArrayListManager) {
-                    if (namaSelected.equals(M.getNama())) {
-                        showNamaLabel.setText(M.getNama());
-                        showJabatanLabel.setText(M.getJabatan());
-                        showDivisiLabel.setText(M.getHeadOf());
-                        nama = M.getNama();
-                        jabatan = M.getJabatan();
-                        div = M.getHeadOf();
+            try {
+                if (!e.getValueIsAdjusting()) {
+                    String namaSelected = ListManager.getSelectedValue().toString();
+                    for (Manager M : ArrayListManager) {
+                        if (namaSelected.equals(M.getNama())) {
+                            showNamaLabel.setText(M.getNama());
+                            showJabatanLabel.setText(M.getJabatan());
+                            showDivisiLabel.setText(M.getHeadOf());
+                            nama = M.getNama();
+                            jabatan = M.getJabatan();
+                            div = M.getHeadOf();
+                        }
                     }
                 }
+            } catch (NullPointerException en) {
+                System.out.print("");
             }
         }
     }
@@ -75,18 +79,22 @@ public class driver extends javax.swing.JFrame {
     
     private class selectHandler2 implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
-            if (!e.getValueIsAdjusting()) {
-                String namaSelected = ListPekerja.getSelectedValue().toString();
-                for (Subordinate M : ArrayListSubordinate) {
-                    if (namaSelected.equals(M.getNama())) {
-                        showNamaLabel.setText(M.getNama());
-                        showJabatanLabel.setText(M.getJabatan());
-                        showDivisiLabel.setText(M.getDivisi());
-                        nama = M.getNama();
-                        jabatan = M.getJabatan();
-                        div = M.getDivisi();
+            try {
+                if (!e.getValueIsAdjusting()) {
+                    String namaSelected = ListPekerja.getSelectedValue().toString();
+                    for (Subordinate M : ArrayListSubordinate) {
+                        if (namaSelected.equals(M.getNama())) {
+                            showNamaLabel.setText(M.getNama());
+                            showJabatanLabel.setText(M.getJabatan());
+                            showDivisiLabel.setText(M.getDivisi());
+                            nama = M.getNama();
+                            jabatan = M.getJabatan();
+                            div = M.getDivisi();
+                        }
                     }
                 }
+            } catch (NullPointerException en) {
+                System.out.print("");
             }
         }
     }
@@ -150,12 +158,15 @@ public class driver extends javax.swing.JFrame {
         ArrayList<String> res = new ArrayList<>();
         for (int i = 0; i < target.length(); i++) {
             String result = "";
-            if (target.charAt(i) == '\"' && "".equals(result)) {
+            if (target.charAt(i) == '"') {
                 i++;
-                result += target.charAt(i);
-            } else if (target.charAt(i) == '\"' && !"".equals(result)) {
+                while (target.charAt(i) != '"') {
+                    result += target.charAt(i);
+                    i++;
+                }
                 res.add(result);
                 result = "";
+                i++;
             }
         }
         return res;
@@ -221,9 +232,6 @@ public class driver extends javax.swing.JFrame {
                 ArrayListSubProject.add(new subProject(Integer.toString(id), nama, isDone, Integer.toString(id_proj)));
             }
             
-            ArrayList<Subordinate> subor = new ArrayList<>();
-            ArrayList<subProject> sub = new ArrayList<>();
-            
             st = "SELECT * FROM project";
             rs = stmt.executeQuery(st);
             while (rs.next()) {
@@ -232,7 +240,6 @@ public class driver extends javax.swing.JFrame {
                 nama = rs.getString("nama");
                 timeStart = rs.getDate("timeStart").toLocalDate();
                 timeEnd = rs.getDate("timeEnd").toLocalDate();
-                System.out.println(nama);
                 String tmp = rs.getString("manager");
                 
                 for (Manager m : ArrayListManager) {
@@ -242,9 +249,11 @@ public class driver extends javax.swing.JFrame {
                     }
                 }
                 
+                ArrayList<Subordinate> subor = new ArrayList<>();
+                ArrayList<subProject> sub = new ArrayList<>();
+                
                 worker = rs.getString("worker");
                 ArrayList<String> w = toArrayString(worker);
-                
                 for (String str : w) {
                     for (Subordinate s : ArrayListSubordinate) {
                         if (str.equals(s.getNama())) {
@@ -253,7 +262,7 @@ public class driver extends javax.swing.JFrame {
                     }
                 }
 
-                String subproject = rs.getString("subproject");
+                String subproject = rs.getString("subProject");
                 ArrayList<String> s = toArrayString(subproject);
                 for (String str : s) {
                     for (subProject S : ArrayListSubProject) {
@@ -274,7 +283,7 @@ public class driver extends javax.swing.JFrame {
                 ArrayListProject.add(new Project(id_cus, nama_cus, Integer.toString(id), nama, timeStart, timeEnd, manager, subor, sub));
                 listModel_3.addElement(nama);
             }
-            
+                        
             stmt.close();
             conn.close();
             

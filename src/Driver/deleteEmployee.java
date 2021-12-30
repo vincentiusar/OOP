@@ -6,10 +6,10 @@
 package Driver;
 
 import static Driver.driver.me;
-import static Driver.editEmployeeLayer.stmt;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -43,11 +43,14 @@ public class deleteEmployee extends javax.swing.JFrame {
     private class handler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             try {
+                conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
                 stmt = conn.createStatement();
                 String st = "DELETE FROM " + jabatan + " WHERE nama = ?";
                 PreparedStatement ps = conn.prepareStatement(st);
                 ps.setString(1, nama);
                 ps.execute();
+                stmt.close();
+                conn.close();
             } catch (Exception a) {
                 a.printStackTrace();
             } finally {
@@ -60,6 +63,7 @@ public class deleteEmployee extends javax.swing.JFrame {
     
     private class handler2 implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            me.loadDB();
             dispose();
         }
     }

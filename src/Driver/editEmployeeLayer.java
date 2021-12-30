@@ -38,6 +38,7 @@ public class editEmployeeLayer extends javax.swing.JFrame {
         
         public void actionPerformed(ActionEvent e) {
             try {
+                conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
                 stmt = conn.createStatement();
                 now_nama = namaTextField.getText().trim();
                 now_jabatan = "";
@@ -90,6 +91,8 @@ public class editEmployeeLayer extends javax.swing.JFrame {
                         ps.setString(3, now_divisi);
                         ps.execute();
                     }
+                    stmt.close();
+                    conn.close();
                 }
             } catch (Exception a) {
                 a.printStackTrace();
@@ -103,6 +106,7 @@ public class editEmployeeLayer extends javax.swing.JFrame {
     
     private class handler2 implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            me.loadDB();
             dispose();
         }
     }
