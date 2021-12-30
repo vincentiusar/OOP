@@ -168,6 +168,26 @@ public class driver extends javax.swing.JFrame {
         }
     }
     
+    private class newProjectHancler implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            
+            editEmployeeLayer mee;
+            if (e.getSource() == editManagerButton || e.getSource() == editPekerjaButton) {
+                mee = new editEmployeeLayer(nama, jabatan, div);
+            } else {
+                nama = ""; div = ""; jabatan = "";
+                mee = new editEmployeeLayer(nama, jabatan, div);
+            }
+            mee.setVisible(true);
+            listModel_1.clear();
+            listModel_2.clear();
+            
+            ArrayListManager.clear();
+            ArrayListSubordinate.clear();
+            ArrayListProject.clear();
+        }
+    }
+    
     private ArrayList<String> toArrayString(String target) {
         ArrayList<String> res = new ArrayList<>();
         for (int i = 0; i < target.length(); i++) {
@@ -313,6 +333,7 @@ public class driver extends javax.swing.JFrame {
         editManagerButton.setEnabled(false);
         editPekerjaButton.setEnabled(false);
         hapusDataButton.setEnabled(false);
+        newProjectButton.addActionListener(new newProjectHancler());
         ListManager.addListSelectionListener(new selectHandler1());
         ListPekerja.addListSelectionListener(new selectHandler2());
         ListProject.addListSelectionListener(new selectHandlerProject());
