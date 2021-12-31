@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2021 at 12:19 PM
+-- Generation Time: Dec 31, 2021 at 04:20 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -85,7 +85,10 @@ CREATE TABLE `project` (
 
 INSERT INTO `project` (`id_project`, `nama`, `timeStart`, `timeEnd`, `manager`, `worker`, `subProject`) VALUES
 (1, 'Maintain Google', '2021-12-08', '2021-12-23', 'aku adalah lelaki', '[\"saya gila\", \"eya eyaaaa\", \"aku adalah diriku\"]', '[\"tukang AC\", \"cuci Kulkas\", \"tim doa\"]'),
-(2, 'Facebook Vunerability', '2021-12-08', '2021-12-29', 'aduh mamank', '[\"saya gila\"]', '[\"matiin lampu\", \"cuci piring\"]');
+(2, 'Facebook Vunerability', '2021-12-08', '2021-12-29', 'aduh mamank', '[\"saya gila\"]', '[\"matiin lampu\", \"cuci piring\"]'),
+(3, 'coba nih pasti', '2021-12-08', '2021-12-23', 'aku adalah lelaki', '[\"saya gila\"]', '[\"masihh\", \"b\"]'),
+(4, 'YESSSs', '2021-12-31', '2022-12-31', 'nama saya siapa', '[\"eya eyaaaa\", \"saya gila\"]', '[]'),
+(5, 'bisa nih liatin aja', '2021-12-31', '2022-12-31', 'aku bukan diriku', '[\"eya eyaaaa\", \"aku adalah diriku\", \"aku ingat namaku\"]', '[]');
 
 -- --------------------------------------------------------
 
@@ -105,10 +108,10 @@ CREATE TABLE `subordinate` (
 --
 
 INSERT INTO `subordinate` (`id`, `nama`, `jabatan`, `divisi`) VALUES
-(1, 'saya gila', 'subordinate', 'networking'),
 (2, 'eya eyaaaa', 'subordinate', 'database'),
 (33, 'aku adalah diriku', 'subordinate', 'project gajelas'),
-(37, 'aku ingat namaku', 'subordinate', 'admin');
+(37, 'aku ingat namaku', 'subordinate', 'admin'),
+(41, 'saya gila', 'subordinate', 'networking');
 
 -- --------------------------------------------------------
 
@@ -132,7 +135,9 @@ INSERT INTO `subproject` (`id`, `nama`, `isDone`, `id_project`) VALUES
 (2, 'cuci Kulkas', 0, 1),
 (3, 'tim doa', 0, 1),
 (4, 'cuci piring', 0, 2),
-(5, 'matiin lampu', 0, 2);
+(5, 'matiin lampu', 0, 2),
+(13, 'masihh', 0, 3),
+(14, 'b', 0, 3);
 
 --
 -- Indexes for dumped tables
@@ -184,25 +189,25 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `manager`
 --
 ALTER TABLE `manager`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `id_project` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_project` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `subordinate`
 --
 ALTER TABLE `subordinate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `subproject`
 --
 ALTER TABLE `subproject`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables
