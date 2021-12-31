@@ -36,6 +36,7 @@ public class driver extends javax.swing.JFrame {
     DefaultListModel<String> listModel_2;
     DefaultListModel<String> listModel_3;
     DefaultListModel<String> listModel_4;
+    DefaultListModel<String> listModel_5;
     DefaultListModel<String> subOfProj_Model, suborOfProj_Model;
     ArrayList<Customer> ArrayListCustomer;
     ArrayList<Manager> ArrayListManager;
@@ -127,8 +128,50 @@ public class driver extends javax.swing.JFrame {
                             }
                             suborOfProject.setModel(suborOfProj_Model);
 
-                            if (count == P.getSubproject().size()) showProjectDone.setText("SELESAI");
+                            if (count == P.getSubproject().size() && P.getSubproject().size() != 0) showProjectDone.setText("SELESAI");
                             else showProjectDone.setText("BELUM");
+                        }
+                    }
+                } catch (NullPointerException en) {
+                    System.out.print("");
+                }
+            }
+        }
+    }
+    
+    private class selectHandlerSubProject implements ListSelectionListener {
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                try {
+                    String namaSelected = ListSubproject.getSelectedValue().toString();
+                    for (subProject P : ArrayListSubProject) {
+                        if (namaSelected.equals(P.getNamaSub())) {
+                            showNamaSubProject.setText(P.getNamaSub());
+                            try {
+                                conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
+                                stmt = conn.createStatement();
+                                
+                                String st = "SELECT id_project FROM subproject WHERE nama = '" + P.getNamaSub() + "'";
+                                rs = stmt.executeQuery(st);
+                                int res = 0;
+                                while (rs.next()) {
+                                    res = rs.getInt("id_project");
+                                }
+                                
+                                st = "SELECT nama FROM project WHERE id_project = " + res;
+                                rs = stmt.executeQuery(st);
+                                while (rs.next()) {
+                                    st = rs.getString("nama");
+                                }
+                                
+                                showIndukProject.setText(st);
+                                
+                                stmt.close();
+                                conn.close();
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                            showStatusSubProject.setText(P.CheckDone() == true ? "SELESAI" : "BELUM");
                         }
                     }
                 } catch (NullPointerException en) {
@@ -203,6 +246,25 @@ public class driver extends javax.swing.JFrame {
         }
     }
     
+//    private class newSubProjectHandler implements ActionListener {
+//        public void actionPerformed(ActionEvent e) {
+//            
+//            editSubProjectLayer mee;
+//            if (e.getSource() == editSubProjectButton) {
+//                
+//            } else {
+//                
+//            }
+//            mee.setVisible(true);
+//            listModel_1.clear();
+//            listModel_2.clear();
+//            
+//            ArrayListManager.clear();
+//            ArrayListSubordinate.clear();
+//            ArrayListProject.clear();
+//        }
+//    }
+    
     private ArrayList<String> toArrayString(String target) {
         ArrayList<String> res = new ArrayList<>();
         for (int i = 0; i < target.length(); i++) {
@@ -225,6 +287,7 @@ public class driver extends javax.swing.JFrame {
         listModel_1 = new DefaultListModel<>();
         listModel_2 = new DefaultListModel<>();
         listModel_3 = new DefaultListModel<>();
+        listModel_5 = new DefaultListModel<>();
         ArrayListManager = new ArrayList<>();
         ArrayListSubordinate = new ArrayList<>();
         ArrayListProject = new ArrayList<>();
@@ -279,6 +342,7 @@ public class driver extends javax.swing.JFrame {
                 boolean isDone = rs.getBoolean("isDone");
                 int id_proj = rs.getInt("id_project");
                 ArrayListSubProject.add(new subProject(Integer.toString(id), nama, isDone, Integer.toString(id_proj)));
+                listModel_5.addElement(nama);
             }
             
             st = "SELECT * FROM project";
@@ -339,6 +403,7 @@ public class driver extends javax.swing.JFrame {
             ListManager.setModel(listModel_1);
             ListPekerja.setModel(listModel_2);
             ListProject.setModel(listModel_3);
+            ListSubproject.setModel(listModel_5);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -353,6 +418,7 @@ public class driver extends javax.swing.JFrame {
         ListManager.addListSelectionListener(new selectHandler1());
         ListPekerja.addListSelectionListener(new selectHandler2());
         ListProject.addListSelectionListener(new selectHandlerProject());
+        ListSubproject.addListSelectionListener(new selectHandlerSubProject());
         newManagerButton.addActionListener(new handler());
         newPekerjaButton.addActionListener(new handler());
         editManagerButton.addActionListener(new handler());
@@ -414,6 +480,16 @@ public class driver extends javax.swing.JFrame {
         suborOfProject = new javax.swing.JList<>();
         showProjectDone = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        ListSubproject = new javax.swing.JList<>();
+        newSubProjectButton = new javax.swing.JButton();
+        editSubProjectButton = new javax.swing.JButton();
+        namaSubProjectLabel = new javax.swing.JLabel();
+        showNamaSubProject = new javax.swing.JLabel();
+        indukProjectLabel = new javax.swing.JLabel();
+        showIndukProject = new javax.swing.JLabel();
+        statusSubProject = new javax.swing.JLabel();
+        showStatusSubProject = new javax.swing.JLabel();
 
         jLabel1.setText("jLabel1");
 
@@ -661,18 +737,71 @@ public class driver extends javax.swing.JFrame {
 
         employeeTabs.addTab("Project", jPanel2);
 
+        ListSubproject.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane6.setViewportView(ListSubproject);
+
+        newSubProjectButton.setText("New SubProject");
+
+        editSubProjectButton.setText("Edit SubProject");
+
+        namaSubProjectLabel.setText("Nama");
+
+        indukProjectLabel.setText("Induk Project");
+
+        statusSubProject.setText("Status SubProject");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 646, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane6)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(newSubProjectButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(editSubProjectButton)))
+                .addGap(30, 30, 30)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(namaSubProjectLabel)
+                    .addComponent(showNamaSubProject)
+                    .addComponent(indukProjectLabel)
+                    .addComponent(showIndukProject)
+                    .addComponent(statusSubProject)
+                    .addComponent(showStatusSubProject))
+                .addContainerGap(258, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 378, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(namaSubProjectLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(showNamaSubProject)
+                        .addGap(23, 23, 23)
+                        .addComponent(indukProjectLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(showIndukProject)
+                        .addGap(23, 23, 23)
+                        .addComponent(statusSubProject)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(showStatusSubProject)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(newSubProjectButton)
+                    .addComponent(editSubProjectButton))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
-        employeeTabs.addTab("tab3", jPanel3);
+        employeeTabs.addTab("Sub-Project", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -740,13 +869,16 @@ public class driver extends javax.swing.JFrame {
     private javax.swing.JLabel ListPekerjaLabel;
     private javax.swing.JList<String> ListProject;
     private javax.swing.JLabel ListProjectLabel;
+    private javax.swing.JList<String> ListSubproject;
     private javax.swing.JLabel deadlineLabel;
     private javax.swing.JButton editManagerButton;
     private javax.swing.JButton editPekerjaButton;
     private javax.swing.JButton editProjectButton;
+    private javax.swing.JButton editSubProjectButton;
     private javax.swing.JTabbedPane employeeTabs;
     private javax.swing.JButton hapusDataButton;
     private javax.swing.JButton hapusProjectButton;
+    private javax.swing.JLabel indukProjectLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -756,21 +888,28 @@ public class driver extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JLabel managerLabel;
     private javax.swing.JLabel namaProjectLabel;
+    private javax.swing.JLabel namaSubProjectLabel;
     private javax.swing.JButton newManagerButton;
     private javax.swing.JButton newPekerjaButton;
     private javax.swing.JButton newProjectButton;
+    private javax.swing.JButton newSubProjectButton;
     private javax.swing.JLabel pekerjaLabel;
     private javax.swing.JLabel showDivisiLabel;
+    private javax.swing.JLabel showIndukProject;
     private javax.swing.JLabel showJabatanLabel;
     private javax.swing.JLabel showManager;
     private javax.swing.JLabel showNamaLabel;
     private javax.swing.JLabel showNamaProject;
+    private javax.swing.JLabel showNamaSubProject;
     private javax.swing.JLabel showProjectDone;
+    private javax.swing.JLabel showStatusSubProject;
     private javax.swing.JLabel showTanggalAkhir;
     private javax.swing.JLabel showTanggalMulai;
     private javax.swing.JLabel statusLabel;
+    private javax.swing.JLabel statusSubProject;
     private javax.swing.JList<String> subOfProject;
     private javax.swing.JLabel subProjectLabel;
     private javax.swing.JList<String> suborOfProject;
