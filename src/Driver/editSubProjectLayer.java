@@ -5,17 +5,171 @@
  */
 package Driver;
 
+import static Driver.driver.me;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author Vincentius
  */
 public class editSubProjectLayer extends javax.swing.JFrame {
 
+    static final String DB_URL = "jdbc:mysql://localhost/projectmanagementtubes";
+    static final String DB_USER = "root";
+    static final String DB_PASS = "";
+    static Connection conn;
+    static Statement stmt;
+    static ResultSet rs;
+    
     /**
      * Creates new form editSubProject
      */
-    public editSubProjectLayer() {
+    
+    boolean isNew = false;
+    String prev_nama;
+    
+    private class handler implements ActionListener {
+        
+        private ArrayList<String> toArrayString(String target) {
+        ArrayList<String> res = new ArrayList<>();
+        for (int i = 0; i < target.length(); i++) {
+            String result = "";
+            if (target.charAt(i) == '"') {
+                i++;
+                while (target.charAt(i) != '"') {
+                    result += target.charAt(i);
+                    i++;
+                }
+                res.add(result);
+                result = "";
+                i++;
+            }
+        }
+        return res;
+    }
+        
+        public void actionPerformed(ActionEvent e) {
+            try {
+                conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
+                stmt = conn.createStatement();
+                
+                String st;
+                if (isNew) {
+                    st = "INSERT INTO subproject (nama, isDone, id_project) VALUES (?, ?, ?)";
+                } else {
+                    st = "UPDATE subproject SET nama = ?, isDone = ?, id_project = ? WHERE nama = ?";
+                }
+                PreparedStatement ps = conn.prepareStatement(st);     
+                ps.setString(1, namaTextField.getText().trim());
+                ps.setBoolean(2, selesaiRadio.isSelected());
+                
+                st = "SELECT id_project FROM project WHERE nama = '" + projectCombo.getSelectedItem().toString() + "'";
+                rs = stmt.executeQuery(st);
+                
+                int id = 0;
+                while (rs.next()) {
+                    id = rs.getInt("id_project");
+                }
+                
+                ps.setInt(3, id);
+                
+                if (!isNew) ps.setString(4, prev_nama);
+                ps.execute();
+                
+                String sub = "";
+                if (isNew) {
+                    st = "SELECT subproject FROM project WHERE id_project = " + id;
+                    rs = stmt.executeQuery(st);
+                    while (rs.next()) {
+                        sub += rs.getString("subproject");
+                    }
+
+                    st = "UPDATE project SET subProject = ? WHERE id_project = ?";
+                    ps = conn.prepareStatement(st);
+
+                    sub = sub.substring(0, sub.length() - 1);
+                    if (sub.charAt(sub.length()-1) == '[')
+                        sub += "\"" + namaTextField.getText().trim() + "\"]";
+                    else sub += ", \"" + namaTextField.getText().trim() + "\"]";
+                } else {
+                    st = "SELECT subproject FROM project WHERE id_project = " + id;
+                    rs = stmt.executeQuery(st);
+                    while (rs.next()) {
+                        sub += rs.getString("subproject");
+                    }
+                    
+                    ArrayList<String> tmp = toArrayString(sub);
+                    int pos = tmp.indexOf(prev_nama);
+                    tmp.set(pos, namaTextField.getText().trim());
+                    String sp = "[";
+                    for (String s : tmp) {
+                        sp += "\"" + s + "\",";
+                    }
+                    sp += "]";
+                    System.out.println(sp);
+                    sub = sp;
+                }
+                ps.setString(1, sub);
+                ps.setInt(2, id);
+                ps.execute();
+                
+                stmt.close();
+                conn.close();
+            } catch (Exception a) {
+                a.printStackTrace();
+            } finally {
+                me.loadDB();
+                SwingUtilities.updateComponentTreeUI(me);
+                dispose();
+            }
+        }
+    }
+    
+    private class handler2 implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            me.loadDB();
+            dispose();
+        }
+    }
+    
+    public void launch(String nama, String induk, boolean status) {
+        OKButton.addActionListener(new handler());
+        cancelButton.addActionListener(new handler2());
+        namaTextField.setText(nama);
+        
+        String st = "SELECT nama FROM project";
+        try {
+            conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(st);
+            while (rs.next()) {
+                projectCombo.addItem(rs.getString("nama"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        projectCombo.setSelectedItem(induk);
+        if (status == false) {
+            selesaiRadio.setSelected(true);
+        } else {
+            belumSelesaiRadio.setSelected(false);
+        }
+    }
+    
+    public editSubProjectLayer(String nama, String induk, boolean status) {
         initComponents();
+        if ("".equals(nama)) isNew = true;
+        prev_nama = nama;
+        launch(nama, induk, status);
     }
 
     /**
@@ -51,8 +205,6 @@ public class editSubProjectLayer extends javax.swing.JFrame {
 
         buttonGroup1.add(belumSelesaiRadio);
         belumSelesaiRadio.setText("Belum Selesai");
-
-        projectCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         cancelButton.setText("Cancel");
 
@@ -118,34 +270,6 @@ public class editSubProjectLayer extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(editSubProjectLayer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(editSubProjectLayer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(editSubProjectLayer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(editSubProjectLayer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton OKButton;

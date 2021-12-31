@@ -139,6 +139,8 @@ public class driver extends javax.swing.JFrame {
         }
     }
     
+    static String nama_sub, induk;
+    static boolean status;
     private class selectHandlerSubProject implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
@@ -147,6 +149,7 @@ public class driver extends javax.swing.JFrame {
                     for (subProject P : ArrayListSubProject) {
                         if (namaSelected.equals(P.getNamaSub())) {
                             showNamaSubProject.setText(P.getNamaSub());
+                            nama_sub = P.getNamaSub();
                             try {
                                 conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
                                 stmt = conn.createStatement();
@@ -165,6 +168,7 @@ public class driver extends javax.swing.JFrame {
                                 }
                                 
                                 showIndukProject.setText(st);
+                                induk = st;
                                 
                                 stmt.close();
                                 conn.close();
@@ -172,6 +176,7 @@ public class driver extends javax.swing.JFrame {
                                 ex.printStackTrace();
                             }
                             showStatusSubProject.setText(P.CheckDone() == true ? "SELESAI" : "BELUM");
+                            status = P.CheckDone();
                         }
                     }
                 } catch (NullPointerException en) {
@@ -237,33 +242,21 @@ public class driver extends javax.swing.JFrame {
                 mee = new editProjectLayer(nama_proj, start, end, managerProject, workers);
             }
             mee.setVisible(true);
-            listModel_1.clear();
-            listModel_2.clear();
-            
-            ArrayListManager.clear();
-            ArrayListSubordinate.clear();
-            ArrayListProject.clear();
         }
     }
     
-//    private class newSubProjectHandler implements ActionListener {
-//        public void actionPerformed(ActionEvent e) {
-//            
-//            editSubProjectLayer mee;
-//            if (e.getSource() == editSubProjectButton) {
-//                
-//            } else {
-//                
-//            }
-//            mee.setVisible(true);
-//            listModel_1.clear();
-//            listModel_2.clear();
-//            
-//            ArrayListManager.clear();
-//            ArrayListSubordinate.clear();
-//            ArrayListProject.clear();
-//        }
-//    }
+    private class newSubProjectHandler implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            
+            editSubProjectLayer mee;
+            if (e.getSource() == editSubProjectButton) {
+                mee = new editSubProjectLayer(nama_sub, induk, status);
+            } else {
+                mee = new editSubProjectLayer("", "", false);
+            }
+            mee.setVisible(true);
+        }
+    }
     
     private ArrayList<String> toArrayString(String target) {
         ArrayList<String> res = new ArrayList<>();
@@ -415,6 +408,8 @@ public class driver extends javax.swing.JFrame {
         hapusDataButton.setEnabled(false);
         newProjectButton.addActionListener(new newProjectHancler());
         editProjectButton.addActionListener(new newProjectHancler());
+        newSubProjectButton.addActionListener(new newSubProjectHandler());
+        editSubProjectButton.addActionListener(new newSubProjectHandler());
         ListManager.addListSelectionListener(new selectHandler1());
         ListPekerja.addListSelectionListener(new selectHandler2());
         ListProject.addListSelectionListener(new selectHandlerProject());
