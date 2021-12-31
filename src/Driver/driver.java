@@ -101,29 +101,38 @@ public class driver extends javax.swing.JFrame {
     private class selectHandlerProject implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
-                String namaSelected = ListProject.getSelectedValue().toString();
-                subOfProj_Model = new DefaultListModel<>(); suborOfProj_Model = new DefaultListModel<>();
-                for (Project P : ArrayListProject) {
-                    if (namaSelected.equals(P.getNama())) {
-                        showNamaProject.setText(P.getNama());
-                        showTanggalMulai.setText(P.getDateStart().toString());
-                        showTanggalAkhir.setText(P.getDateEnd().toString());
-                        showManager.setText(P.getManager().getNama());
-                        
-                        int count = 0;
-                        for (subProject s : P.getSubproject()) {
-                            count += Integer.valueOf(s.CheckDone() == true ? "1" : "0");
-                            subOfProj_Model.addElement(s.getNamaSub());
+                try {
+                    String namaSelected = ListProject.getSelectedValue().toString();
+                    subOfProj_Model = new DefaultListModel<>(); suborOfProj_Model = new DefaultListModel<>(); workers = new ArrayList<>();
+                    for (Project P : ArrayListProject) {
+                        if (namaSelected.equals(P.getNama())) {
+                            showNamaProject.setText(P.getNama());
+                            showTanggalMulai.setText(P.getDateStart().toString());
+                            showTanggalAkhir.setText(P.getDateEnd().toString());
+                            showManager.setText(P.getManager().getNama());
+                            nama_proj = P.getNama();
+                            managerProject = P.getManager().getNama();
+                            start = P.getDateStart();
+                            end = P.getDateEnd();
+                            
+                            int count = 0;
+                            for (subProject s : P.getSubproject()) {
+                                count += Integer.valueOf(s.CheckDone() == true ? "1" : "0");
+                                subOfProj_Model.addElement(s.getNamaSub());
+                            }
+                            subOfProject.setModel(subOfProj_Model);
+                            for (Subordinate s : P.getSubordinate()) {
+                                suborOfProj_Model.addElement(s.getNama());
+                                workers.add(s.getNama());
+                            }
+                            suborOfProject.setModel(suborOfProj_Model);
+
+                            if (count == P.getSubproject().size()) showProjectDone.setText("SELESAI");
+                            else showProjectDone.setText("BELUM");
                         }
-                        subOfProject.setModel(subOfProj_Model);
-                        for (Subordinate s : P.getSubordinate()) {
-                            suborOfProj_Model.addElement(s.getNama());
-                        }
-                        suborOfProject.setModel(suborOfProj_Model);
-                        
-                        if (count == P.getSubproject().size()) showProjectDone.setText("SELESAI");
-                        else showProjectDone.setText("BELUM");
                     }
+                } catch (NullPointerException en) {
+                    System.out.print("");
                 }
             }
         }
@@ -168,15 +177,21 @@ public class driver extends javax.swing.JFrame {
         }
     }
     
+    String nama_proj, managerProject;
+    LocalDate start, end;
+    ArrayList<String> workers;
     private class newProjectHancler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             
-            editEmployeeLayer mee;
-            if (e.getSource() == editManagerButton || e.getSource() == editPekerjaButton) {
-                mee = new editEmployeeLayer(nama, jabatan, div);
+            editProjectLayer mee;
+            if (e.getSource() == editProjectButton) {
+                
+                mee = new editProjectLayer(nama_proj, start, end, managerProject, workers);
             } else {
-                nama = ""; div = ""; jabatan = "";
-                mee = new editEmployeeLayer(nama, jabatan, div);
+                nama_proj = ""; managerProject = "";
+                start = null; end = null;
+                workers = null;
+                mee = new editProjectLayer(nama_proj, start, end, managerProject, workers);
             }
             mee.setVisible(true);
             listModel_1.clear();
@@ -334,6 +349,7 @@ public class driver extends javax.swing.JFrame {
         editPekerjaButton.setEnabled(false);
         hapusDataButton.setEnabled(false);
         newProjectButton.addActionListener(new newProjectHancler());
+        editProjectButton.addActionListener(new newProjectHancler());
         ListManager.addListSelectionListener(new selectHandler1());
         ListPekerja.addListSelectionListener(new selectHandler2());
         ListProject.addListSelectionListener(new selectHandlerProject());

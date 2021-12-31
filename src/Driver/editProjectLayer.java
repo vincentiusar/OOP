@@ -6,15 +6,20 @@
 package Driver;
 
 import static Driver.driver.me;
+import static Driver.editEmployeeLayer.conn;
+import static Driver.editEmployeeLayer.stmt;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.swing.SpinnerDateModel;
 import javax.swing.SwingUtilities;
 
 /**
@@ -35,10 +40,77 @@ public class editProjectLayer extends javax.swing.JFrame {
      * Creates new form newProjectLayer
      */
     
+    String prev_nama = "";
+    
     private class handler implements ActionListener {
         
         public void actionPerformed(ActionEvent e) {
-           
+            try {
+                conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
+                stmt = conn.createStatement();
+                String st;
+                if (isNew) {
+                    st = "INSERT INTO project (nama, timeStart, timeEnd, manager, worker, subProject) VALUES (?, ?, ?, ?, ?, '[]')";
+                } else {
+                    st = "UPDATE project SET nama = ?, timeStart = ?, timeEnd = ?, manager = ?, worker = ? WHERE nama = ?";
+                }
+                String worker = "[";
+                ArrayList<String> tmp = new ArrayList<>();
+                if (!"-------".equals(subordinateCombo1.getSelectedItem().toString())) {
+                    worker += "\"" + subordinateCombo1.getSelectedItem().toString() + "\"";
+                    tmp.add(subordinateCombo1.getSelectedItem().toString());
+                }
+
+                if (!"-------".equals(subordinateCombo2.getSelectedItem().toString()) && !tmp.contains(subordinateCombo2.getSelectedItem().toString())) {
+                    worker += ", \"" + subordinateCombo2.getSelectedItem().toString() + "\"";
+                    tmp.add(subordinateCombo2.getSelectedItem().toString());
+                }
+
+                if (!"-------".equals(subordinateCombo3.getSelectedItem().toString()) && !tmp.contains(subordinateCombo3.getSelectedItem().toString())) {
+                    worker += ", \"" + subordinateCombo3.getSelectedItem().toString() + "\"";
+                    tmp.add(subordinateCombo2.getSelectedItem().toString());
+                }
+
+                if (!"-------".equals(subordinateCombo4.getSelectedItem().toString()) && !tmp.contains(subordinateCombo4.getSelectedItem().toString())) {
+                    worker += ", \"" + subordinateCombo4.getSelectedItem().toString() + "\"";
+                    tmp.add(subordinateCombo2.getSelectedItem().toString());
+                }
+
+                if (!"-------".equals(subordinateCombo5.getSelectedItem().toString()) && !tmp.contains(subordinateCombo5.getSelectedItem().toString())) {
+                    worker += ", \"" + subordinateCombo5.getSelectedItem().toString() + "\"";
+                }
+
+                worker += "]";
+
+                java.util.Date res = (java.util.Date) dateStartSpinner.getValue();
+                int day = res.getDate(), month = res.getMonth()+1, year = res.getYear()+1900;
+                String appended_date = Integer.toString(year) + "-" + Integer.toString(month) + "-" + Integer.toString(day);
+
+                PreparedStatement ps = conn.prepareStatement(st);
+                ps.setString(1, namaProjectField.getText().trim());
+                ps.setString(2, appended_date);
+
+                res = (java.util.Date) dateEndSpinner.getValue();
+                day = res.getDate(); month = res.getMonth()+1; year = res.getYear()+1900;
+                appended_date = Integer.toString(year) + "-" + Integer.toString(month) + "-" + Integer.toString(day);
+
+                ps.setString(3, appended_date);
+                ps.setString(4, managerCombo.getSelectedItem().toString());
+                ps.setString(5, worker);
+                
+                if (!isNew) ps.setString(6, prev_nama);
+
+                ps.execute();
+                
+                stmt.close();
+                conn.close();
+            } catch (Exception en) {
+                en.printStackTrace();
+            } finally {
+                me.loadDB();
+                SwingUtilities.updateComponentTreeUI(me);
+                dispose();
+            }
         }
     }
     
@@ -54,12 +126,69 @@ public class editProjectLayer extends javax.swing.JFrame {
             OKButton.addActionListener(new handler());
             cancelButton.addActionListener(new handler2());
             namaProjectField.setText(nama);
+            String st;
+            
+            conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
+            stmt = conn.createStatement();
+            st = "SELECT nama FROM manager";
+            rs = stmt.executeQuery(st);
+            while (rs.next()) {
+                String name = rs.getString("nama");
+                managerCombo.addItem(name);
+            }
+            st = "SELECT nama FROM subordinate";
+            rs = stmt.executeQuery(st);
+            while (rs.next()) {
+                String name = rs.getString("nama");
+                subordinateCombo1.addItem(name);
+                subordinateCombo2.addItem(name);
+                subordinateCombo3.addItem(name);
+                subordinateCombo4.addItem(name);
+                subordinateCombo5.addItem(name);
+            }
+            
+            if (!isNew) {
+                managerCombo.setSelectedItem(manager);
+                
+                try {
+                    subordinateCombo1.setSelectedItem(worker.get(0));
+                } catch (Exception en) {
+                    System.out.print("");
+                }
+                
+                try {
+                    subordinateCombo2.setSelectedItem(worker.get(1));
+                } catch (Exception en) {
+                    System.out.print("");
+                }
+
+                try {
+                    subordinateCombo3.setSelectedItem(worker.get(2));
+                } catch (Exception en) {
+                    System.out.print("");
+                } 
+                try {
+                    subordinateCombo3.setSelectedItem(worker.get(3));
+                } catch (Exception en) {
+                    System.out.print("");
+                }
+                try {
+                    subordinateCombo3.setSelectedItem(worker.get(4));
+                } catch (Exception en) {
+                    System.out.print("");
+                }
+                
+                Date tmp = Date.valueOf(start);
+                dateStartSpinner.setModel(new javax.swing.SpinnerDateModel(tmp, null, null, java.util.Calendar.DAY_OF_MONTH));
+                tmp = Date.valueOf(end);
+                dateEndSpinner.setModel(new javax.swing.SpinnerDateModel(tmp, null, null, java.util.Calendar.DAY_OF_MONTH));
+            }
+            stmt.close();
+            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    String prev_nama;
     
     public editProjectLayer(String nama, LocalDate start, LocalDate end, String manager, ArrayList<String> worker) {
         initComponents();
@@ -93,14 +222,10 @@ public class editProjectLayer extends javax.swing.JFrame {
         subordinateCombo4 = new javax.swing.JComboBox<>();
         subordinateCombo5 = new javax.swing.JComboBox<>();
         namaProjectField = new javax.swing.JTextField();
-        startSpinnerDay = new javax.swing.JSpinner();
-        startSpinnerMonth = new javax.swing.JSpinner();
-        startSpinnerYear = new javax.swing.JSpinner();
-        endSpinnerDay = new javax.swing.JSpinner();
-        endSpinnerMonth = new javax.swing.JSpinner();
-        endSpinnerYear = new javax.swing.JSpinner();
         cancelButton = new javax.swing.JButton();
         OKButton = new javax.swing.JButton();
+        dateStartSpinner = new javax.swing.JSpinner();
+        dateEndSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -114,7 +239,7 @@ public class editProjectLayer extends javax.swing.JFrame {
 
         subordinate1ProjectLabel.setText("Pekerja 1");
 
-        managerCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        managerCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-------" }));
 
         subordinate2ProjectLabel.setText("Pekerja 2");
 
@@ -124,19 +249,23 @@ public class editProjectLayer extends javax.swing.JFrame {
 
         subordinate5ProjectLabel.setText("Pekerja 5");
 
-        subordinateCombo1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        subordinateCombo1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-------" }));
 
-        subordinateCombo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        subordinateCombo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-------" }));
 
-        subordinateCombo3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        subordinateCombo3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-------" }));
 
-        subordinateCombo4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        subordinateCombo4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-------" }));
 
-        subordinateCombo5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        subordinateCombo5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-------" }));
 
         cancelButton.setText("Cancel");
 
         OKButton.setText("OK");
+
+        dateStartSpinner.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), new java.util.Date(1262278800000L), null, java.util.Calendar.DAY_OF_MONTH));
+
+        dateEndSpinner.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), new java.util.Date(1262278800000L), null, java.util.Calendar.DAY_OF_MONTH));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -145,44 +274,27 @@ public class editProjectLayer extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(deadlineLabel)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(subordinate4ProjectLabel)
-                            .addComponent(subordinate3ProjectLabel)
-                            .addComponent(subordinate2ProjectLabel)
-                            .addComponent(subordinate5ProjectLabel)
-                            .addComponent(managerProjectLabel)
-                            .addComponent(subordinate1ProjectLabel)
-                            .addComponent(projectNameLabel)
-                            .addComponent(tglMulaiLabel))
-                        .addGap(37, 37, 37)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(subordinateCombo5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(subordinateCombo2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(subordinateCombo3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(subordinateCombo4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(managerCombo, 0, 165, Short.MAX_VALUE)
-                                    .addComponent(subordinateCombo1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(namaProjectField))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(startSpinnerDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(endSpinnerDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(45, 45, 45)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(endSpinnerMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                                        .addComponent(endSpinnerYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(startSpinnerMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(startSpinnerYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                    .addComponent(subordinate4ProjectLabel)
+                    .addComponent(subordinate3ProjectLabel)
+                    .addComponent(subordinate2ProjectLabel)
+                    .addComponent(subordinate5ProjectLabel)
+                    .addComponent(managerProjectLabel)
+                    .addComponent(subordinate1ProjectLabel)
+                    .addComponent(projectNameLabel)
+                    .addComponent(tglMulaiLabel)
+                    .addComponent(deadlineLabel))
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(subordinateCombo5, 0, 182, Short.MAX_VALUE)
+                    .addComponent(subordinateCombo2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(subordinateCombo3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(subordinateCombo4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(dateEndSpinner, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                        .addComponent(managerCombo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(namaProjectField, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(dateStartSpinner, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(subordinateCombo1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(45, 45, 45))
             .addGroup(layout.createSequentialGroup()
                 .addGap(93, 93, 93)
@@ -201,15 +313,11 @@ public class editProjectLayer extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tglMulaiLabel)
-                    .addComponent(startSpinnerDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(startSpinnerMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(startSpinnerYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dateStartSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deadlineLabel)
-                    .addComponent(endSpinnerDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(endSpinnerMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(endSpinnerYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dateEndSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(managerProjectLabel)
@@ -251,17 +359,13 @@ public class editProjectLayer extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton OKButton;
     private javax.swing.JButton cancelButton;
+    private javax.swing.JSpinner dateEndSpinner;
+    private javax.swing.JSpinner dateStartSpinner;
     private javax.swing.JLabel deadlineLabel;
-    private javax.swing.JSpinner endSpinnerDay;
-    private javax.swing.JSpinner endSpinnerMonth;
-    private javax.swing.JSpinner endSpinnerYear;
     private javax.swing.JComboBox<String> managerCombo;
     private javax.swing.JLabel managerProjectLabel;
     private javax.swing.JTextField namaProjectField;
     private javax.swing.JLabel projectNameLabel;
-    private javax.swing.JSpinner startSpinnerDay;
-    private javax.swing.JSpinner startSpinnerMonth;
-    private javax.swing.JSpinner startSpinnerYear;
     private javax.swing.JLabel subordinate1ProjectLabel;
     private javax.swing.JLabel subordinate2ProjectLabel;
     private javax.swing.JLabel subordinate3ProjectLabel;
