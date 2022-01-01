@@ -71,6 +71,8 @@ public class driver extends javax.swing.JFrame {
                 }
             } catch (NullPointerException en) {
                 System.out.print("");
+                editManagerButton.setEnabled(false);
+                editPekerjaButton.setEnabled(false);
             }
         }
     }
@@ -95,6 +97,8 @@ public class driver extends javax.swing.JFrame {
                 }
             } catch (NullPointerException en) {
                 System.out.print("");
+                editManagerButton.setEnabled(false);
+                editPekerjaButton.setEnabled(false);
             }
         }
     }
@@ -103,6 +107,7 @@ public class driver extends javax.swing.JFrame {
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 try {
+                    editProjectButton.setEnabled(true);
                     String namaSelected = ListProject.getSelectedValue().toString();
                     subOfProj_Model = new DefaultListModel<>(); suborOfProj_Model = new DefaultListModel<>(); workers = new ArrayList<>();
                     for (Project P : ArrayListProject) {
@@ -134,6 +139,7 @@ public class driver extends javax.swing.JFrame {
                     }
                 } catch (NullPointerException en) {
                     System.out.print("");
+                    editProjectButton.setEnabled(false);
                 }
             }
         }
@@ -146,6 +152,7 @@ public class driver extends javax.swing.JFrame {
             if (!e.getValueIsAdjusting()) {
                 try {
                     String namaSelected = ListSubproject.getSelectedValue().toString();
+                    editSubProjectButton.setEnabled(true);
                     for (subProject P : ArrayListSubProject) {
                         if (namaSelected.equals(P.getNamaSub())) {
                             showNamaSubProject.setText(P.getNamaSub());
@@ -180,6 +187,7 @@ public class driver extends javax.swing.JFrame {
                         }
                     }
                 } catch (NullPointerException en) {
+                    editSubProjectButton.setEnabled(false);
                     System.out.print("");
                 }
             }
@@ -202,12 +210,6 @@ public class driver extends javax.swing.JFrame {
                 mee = new editEmployeeLayer(nama, jabatan, div);
             }
             mee.setVisible(true);
-            listModel_1.clear();
-            listModel_2.clear();
-            
-            ArrayListManager.clear();
-            ArrayListSubordinate.clear();
-            ArrayListProject.clear();
         }
     }
     
@@ -216,12 +218,6 @@ public class driver extends javax.swing.JFrame {
             deleteEmployee mee;
             mee = new deleteEmployee(nama, jabatan, div);
             mee.setVisible(true);
-            listModel_1.clear();
-            listModel_2.clear();
-            
-            ArrayListManager.clear();
-            ArrayListSubordinate.clear();
-            ArrayListProject.clear();
         }
     }
     
@@ -242,6 +238,7 @@ public class driver extends javax.swing.JFrame {
                 mee = new editProjectLayer(nama_proj, start, end, managerProject, workers);
             }
             mee.setVisible(true);
+            
         }
     }
     
@@ -406,6 +403,8 @@ public class driver extends javax.swing.JFrame {
         editManagerButton.setEnabled(false);
         editPekerjaButton.setEnabled(false);
         hapusDataButton.setEnabled(false);
+        editProjectButton.setEnabled(false);
+        editSubProjectButton.setEnabled(false);
         newProjectButton.addActionListener(new newProjectHancler());
         editProjectButton.addActionListener(new newProjectHancler());
         newSubProjectButton.addActionListener(new newSubProjectHandler());

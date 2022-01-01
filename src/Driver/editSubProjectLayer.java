@@ -39,22 +39,22 @@ public class editSubProjectLayer extends javax.swing.JFrame {
     private class handler implements ActionListener {
         
         private ArrayList<String> toArrayString(String target) {
-        ArrayList<String> res = new ArrayList<>();
-        for (int i = 0; i < target.length(); i++) {
-            String result = "";
-            if (target.charAt(i) == '"') {
-                i++;
-                while (target.charAt(i) != '"') {
-                    result += target.charAt(i);
+            ArrayList<String> res = new ArrayList<>();
+            for (int i = 0; i < target.length(); i++) {
+                String result = "";
+                if (target.charAt(i) == '"') {
+                    i++;
+                    while (target.charAt(i) != '"') {
+                        result += target.charAt(i);
+                        i++;
+                    }
+                    res.add(result);
+                    result = "";
                     i++;
                 }
-                res.add(result);
-                result = "";
-                i++;
             }
+            return res;
         }
-        return res;
-    }
         
         public void actionPerformed(ActionEvent e) {
             try {
@@ -85,27 +85,21 @@ public class editSubProjectLayer extends javax.swing.JFrame {
                 ps.execute();
                 
                 String sub = "";
+                st = "SELECT subproject FROM project WHERE id_project = " + id;
+                rs = stmt.executeQuery(st);
+                while (rs.next()) {
+                    sub += rs.getString("subproject");
+                }
+
+                st = "UPDATE project SET subProject = ? WHERE id_project = ?";
+                ps = conn.prepareStatement(st);
+                
                 if (isNew) {
-                    st = "SELECT subproject FROM project WHERE id_project = " + id;
-                    rs = stmt.executeQuery(st);
-                    while (rs.next()) {
-                        sub += rs.getString("subproject");
-                    }
-
-                    st = "UPDATE project SET subProject = ? WHERE id_project = ?";
-                    ps = conn.prepareStatement(st);
-
                     sub = sub.substring(0, sub.length() - 1);
                     if (sub.charAt(sub.length()-1) == '[')
                         sub += "\"" + namaTextField.getText().trim() + "\"]";
                     else sub += ", \"" + namaTextField.getText().trim() + "\"]";
                 } else {
-                    st = "SELECT subproject FROM project WHERE id_project = " + id;
-                    rs = stmt.executeQuery(st);
-                    while (rs.next()) {
-                        sub += rs.getString("subproject");
-                    }
-                    
                     ArrayList<String> tmp = toArrayString(sub);
                     int pos = tmp.indexOf(prev_nama);
                     tmp.set(pos, namaTextField.getText().trim());
@@ -114,7 +108,6 @@ public class editSubProjectLayer extends javax.swing.JFrame {
                         sp += "\"" + s + "\",";
                     }
                     sp += "]";
-                    System.out.println(sp);
                     sub = sp;
                 }
                 ps.setString(1, sub);
@@ -158,10 +151,10 @@ public class editSubProjectLayer extends javax.swing.JFrame {
         }
         
         projectCombo.setSelectedItem(induk);
-        if (status == false) {
+        if (status == true) {
             selesaiRadio.setSelected(true);
         } else {
-            belumSelesaiRadio.setSelected(false);
+            belumSelesaiRadio.setSelected(true);
         }
     }
     
