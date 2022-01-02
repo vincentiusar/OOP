@@ -71,22 +71,17 @@
                   <Component id="radioManager" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="radioSubor" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                      <Component id="showTextIf" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                      <Component id="divTextField" min="-2" max="-2" attributes="0"/>
-                  </Group>
+              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="divTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="showTextIf" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="cancelButton" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="OKButton" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="70" max="32767" attributes="0"/>
+              <EmptySpace pref="63" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -121,6 +116,9 @@
     <Component class="javax.swing.JTextField" name="namaTextField">
     </Component>
     <Component class="javax.swing.JLabel" name="showTextIf">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Divisi"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="divTextField">
     </Component>

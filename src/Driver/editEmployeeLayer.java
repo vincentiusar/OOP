@@ -20,7 +20,8 @@ import javax.swing.SwingUtilities;
  * @author Vincentius
  */
 public class editEmployeeLayer extends javax.swing.JFrame {
-
+    
+    // Database properties
     static final String DB_URL = "jdbc:mysql://localhost/projectmanagementtubes";
     static final String DB_USER = "root";
     static final String DB_PASS = "";
@@ -32,9 +33,17 @@ public class editEmployeeLayer extends javax.swing.JFrame {
      * Creates new form managerPopLayer
      */
     
-    boolean isNew = false;
+    boolean isNew = false;      // penanda apakah data baru atau data diedit
     
     private class handler implements ActionListener {
+        
+        /*
+            I.S. digunakan untuk tombol "OK" ketika ditekan, akan diterima data
+                 inputan user baik edit atau new.
+            F.S. akan dilakukan pengeditan data jika tombol edit pada bagian sebelumnya
+                 ditekan. akan dilakukan penambahan data jika tombol new ditekan.
+                 data pada DB akan diubah.
+        */
         
         public void actionPerformed(ActionEvent e) {
             try {
@@ -49,7 +58,7 @@ public class editEmployeeLayer extends javax.swing.JFrame {
                 }
                 now_divisi = divTextField.getText().trim();
                 
-                if (isNew) {
+                if (isNew) {        // jika datanya baru, lakukan insert
                     String st = "";
                     if ("Manager".equals(now_jabatan)) {
                         st = "INSERT INTO manager (nama, jabatan, headof) VALUES (?, ?, ?);";
@@ -61,7 +70,7 @@ public class editEmployeeLayer extends javax.swing.JFrame {
                     ps.setString(2, now_jabatan);
                     ps.setString(3, now_divisi);
                     ps.execute();
-                } else {
+                } else {            // selain itu, lakukan update
                     if (prev_jabatan.equals(now_jabatan)) {
                         String st;
                         if ("Manager".equals(now_jabatan)) {
@@ -105,6 +114,12 @@ public class editEmployeeLayer extends javax.swing.JFrame {
     }
     
     private class handler2 implements ActionListener {
+        
+        /*
+            I.S. handler untuk tombol cancel. user menekan cancel
+            F.S. kembali ke layar utama. layar employee tertutup
+        */
+        
         public void actionPerformed(ActionEvent e) {
             me.loadDB();
             dispose();
@@ -112,30 +127,35 @@ public class editEmployeeLayer extends javax.swing.JFrame {
     }
        
     private void launch(String nama, String jabatan, String div) {
-        try {
-            OKButton.addActionListener(new handler());
-            cancelButton.addActionListener(new handler2());
-            namaTextField.setText(nama);
-            if (jabatan.equals("Manager")) {
-                radioManager.setSelected(true);
-                showTextIf.setText("Head Of");
-            } else if (jabatan.equals("subordinate")) {
-                radioSubor.setSelected(true);
-                showTextIf.setText("Divisi");
-            }
-            divTextField.setText(div);
-            
-            conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
-            
-        } catch (Exception e) {
-            e.printStackTrace();
+        
+        /*
+            I.S. fungsi pertama yang berjalan sebagai initiatior
+            F.S. ...
+        */
+        
+        OKButton.addActionListener(new handler());
+        cancelButton.addActionListener(new handler2());
+        namaTextField.setText(nama);
+        if (jabatan.equals("Manager")) {
+            radioManager.setSelected(true);
+            showTextIf.setText("Head Of");
+        } else if (jabatan.equals("subordinate")) {
+            radioSubor.setSelected(true);
+            showTextIf.setText("Divisi");
         }
+        divTextField.setText(div);
     }
     
-    String now_nama, now_jabatan, now_divisi;
-    String prev_nama, prev_jabatan, prev_divisi;
+    String now_nama, now_jabatan, now_divisi;           // menampung nama employee setelah diubah, jabatan, dan divisinya
+    String prev_nama, prev_jabatan, prev_divisi;        // menampung nama employee sebelum diubah, jabatan, dan divisinya
     
     public editEmployeeLayer(String nama, String jabatan, String divisi) {
+        
+        /*
+            I.S. konstrutor layer
+            F.S. ...
+        */
+        
         initComponents();
         if ("".equals(nama)) isNew = true;
         prev_nama = nama;
@@ -174,6 +194,8 @@ public class editEmployeeLayer extends javax.swing.JFrame {
 
         buttonGroup1.add(radioSubor);
         radioSubor.setText("Subordinate");
+
+        showTextIf.setText("Divisi");
 
         OKButton.setText("OK");
 
@@ -217,18 +239,15 @@ public class editEmployeeLayer extends javax.swing.JFrame {
                     .addComponent(jabatanLabel)
                     .addComponent(radioManager)
                     .addComponent(radioSubor))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addComponent(showTextIf))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(divTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(divTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showTextIf))
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cancelButton)
                     .addComponent(OKButton))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         pack();

@@ -24,7 +24,8 @@ import javax.swing.event.*;
  * @author Vincentius
  */
 public class driver extends javax.swing.JFrame {
-
+    
+    // Database properties
     static final String DB_URL = "jdbc:mysql://localhost/projectmanagementtubes";
     static final String DB_USER = "root";
     static final String DB_PASS = "";
@@ -32,17 +33,16 @@ public class driver extends javax.swing.JFrame {
     static Statement stmt, stmt2;
     static ResultSet rs, rs2;
     
-    DefaultListModel<String> listModel_1;
-    DefaultListModel<String> listModel_2;
-    DefaultListModel<String> listModel_3;
-    DefaultListModel<String> listModel_4;
-    DefaultListModel<String> listModel_5;
-    DefaultListModel<String> subOfProj_Model, suborOfProj_Model;
-    ArrayList<Customer> ArrayListCustomer;
-    ArrayList<Manager> ArrayListManager;
-    ArrayList<Subordinate> ArrayListSubordinate;
-    ArrayList<Project> ArrayListProject;
-    ArrayList<subProject> ArrayListSubProject;
+    DefaultListModel<String> listModel_1;           // list model untuk manager
+    DefaultListModel<String> listModel_2;           // list model untuk subordinate
+    DefaultListModel<String> listModel_3;           // list model untuk project
+    DefaultListModel<String> listModel_4;           // list model untuk subproject
+    DefaultListModel<String> subOfProj_Model, suborOfProj_Model;        // list model untuk isi pekerja dan subpreoject pada project
+    ArrayList<Customer> ArrayListCustomer;          // array list menampung customer
+    ArrayList<Manager> ArrayListManager;            // array list menampung manager
+    ArrayList<Subordinate> ArrayListSubordinate;    // array list menampung subordinate
+    ArrayList<Project> ArrayListProject;            // array list menampung project
+    ArrayList<subProject> ArrayListSubProject;      // array list menampung subproject
     
     /**
      * Creates new form java
@@ -51,7 +51,15 @@ public class driver extends javax.swing.JFrame {
         initComponents();
     }
 
-    private class selectHandler1 implements ListSelectionListener {
+    private class selectManagerHandler implements ListSelectionListener {
+        
+        /*
+            I.S. digunakan untuk menunjukan info manager yang ditunjuk. Pada awalnya
+                 info = null
+            F.S. ketika dipilih salah satu manager, akan dikeluarkan info manager 
+                 yang ditunjuk
+        */
+        
         public void valueChanged(ListSelectionEvent e) {
             try {
                 if (!e.getValueIsAdjusting()) {
@@ -77,7 +85,15 @@ public class driver extends javax.swing.JFrame {
         }
     }
     
-    private class selectHandler2 implements ListSelectionListener {
+    private class selectSubordinateHandler implements ListSelectionListener {
+        
+        /*
+            I.S. digunakan untuk menunjukan info subordinate yang ditunjuk. Pada awalnya
+                 info = null
+            F.S. ketika dipilih salah satu subordinate, akan dikeluarkan info subordinate 
+                 yang ditunjuk
+        */
+        
         public void valueChanged(ListSelectionEvent e) {
             try {
                 if (!e.getValueIsAdjusting()) {
@@ -103,7 +119,15 @@ public class driver extends javax.swing.JFrame {
         }
     }
     
-    private class selectHandlerProject implements ListSelectionListener {
+    private class selectProjectHandler implements ListSelectionListener {
+        
+        /*
+            I.S. digunakan untuk menunjukan info Project yang ditunjuk. Pada awalnya
+                 info = null
+            F.S. ketika dipilih salah satu Project, akan dikeluarkan info Project 
+                 yang ditunjuk
+        */
+        
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 try {
@@ -145,9 +169,17 @@ public class driver extends javax.swing.JFrame {
         }
     }
     
-    static String nama_sub, induk;
-    static boolean status;
-    private class selectHandlerSubProject implements ListSelectionListener {
+    static String nama_sub, induk;      // penampung nama subproject dan project induknya
+    static boolean status;              // menampung status subproject (SELESAI : BELUM)
+    private class selectSubProjectHandler implements ListSelectionListener {
+        
+        /*
+            I.S. digunakan untuk menunjukan info subproject yang ditunjuk. Pada awalnya
+                 info = null
+            F.S. ketika dipilih salah satu subroject, akan dikeluarkan info subproject 
+                 yang ditunjuk
+        */
+        
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 try {
@@ -194,12 +226,22 @@ public class driver extends javax.swing.JFrame {
         }
     }
     
-    static String nama, jabatan, div, nama_cus;
-    static LocalDate timeStart, timeEnd;
-    static String worker, subProject;
-    static Manager manager;
+    static String nama, jabatan, div, nama_cus;         // penampung nama tiap manager, subordinate, project. 
+                                                        // jabatan pemapung jabatan manager dan subordinate. nama cus pemapung nama customer
+    static LocalDate timeStart, timeEnd;                // penampung waktu mulai dan selesai project
+    static String worker, subProject;                   // penampung pekerja dan subproject dari DATABASE (varchar)
+    static Manager manager;                             // penampung manager dari DATABASE
     
-    private class handler implements ActionListener {
+    private class editEmployeeHandler implements ActionListener {
+        
+        /*
+            I.S. digunakan untuk memanggil layer baru. Fungsinya mengedit/menambah 
+                 employee (manager, subordinate). Deteksi tombol mana yang ditekan. 
+                 Jika edit, maka parameter konstruktur diisi dengan data sebelum diedit.
+            F.S. ketika dipilih tombol edit, maka parameter atribut tiap employee dibawa. 
+                 jika new button, maka diisi dengan null ("")
+        */
+        
         public void actionPerformed(ActionEvent e) {
             
             editEmployeeLayer mee;
@@ -213,7 +255,14 @@ public class driver extends javax.swing.JFrame {
         }
     }
     
-    private class deleteHandler implements ActionListener {
+    private class deleteEmployeeHandler implements ActionListener {
+        
+        /*
+            I.S. digunakan untuk memanggil layer baru. Fungsinya menghapus data
+                 employee yang ada.
+            F.S. terhapus data employee.
+        */
+        
         public void actionPerformed(ActionEvent e) {
             deleteEmployee mee;
             mee = new deleteEmployee(nama, jabatan, div);
@@ -225,6 +274,15 @@ public class driver extends javax.swing.JFrame {
     LocalDate start, end;
     ArrayList<String> workers;
     private class newProjectHancler implements ActionListener {
+        
+        /*
+            I.S. digunakan untuk memanggil layer baru. Fungsinya mengedit/menambahkan project.
+                 Deteksi tombol mana yang ditekan. Jika edit, maka parameter konstruktur diisi
+                 dengan data sebelum diedit.
+            F.S. ketika dipilih tombol edit, maka parameter atribut tiap employee dibawa. 
+                 jika new button, maka diisi dengan null ("")
+        */
+        
         public void actionPerformed(ActionEvent e) {
             
             editProjectLayer mee;
@@ -243,6 +301,15 @@ public class driver extends javax.swing.JFrame {
     }
     
     private class newSubProjectHandler implements ActionListener {
+        
+        /*
+            I.S. digunakan untuk memanggil layer baru. Fungsinya mengedit/menambahkan subproject.
+                 Deteksi tombol mana yang ditekan. Jika edit, maka parameter konstruktur diisi
+                 dengan data sebelum diedit.
+            F.S. ketika dipilih tombol edit, maka parameter atribut tiap employee dibawa. 
+                 jika new button, maka diisi dengan null ("")
+        */
+        
         public void actionPerformed(ActionEvent e) {
             
             editSubProjectLayer mee;
@@ -256,6 +323,15 @@ public class driver extends javax.swing.JFrame {
     }
     
     private ArrayList<String> toArrayString(String target) {
+        
+        /*
+            I.S. terdefinisi sebuah string dari DATABASE (varchar) pada table project.
+                 kolom subproject dan worker akan dilakukan perubahan tipe data
+                 menjadi array list String untuk dimasukkan dalam element atribut
+                 project dan subproject
+            F.S. perubahan tipe data dari String menjadi array list String
+        */
+        
         ArrayList<String> res = new ArrayList<>();
         for (int i = 0; i < target.length(); i++) {
             String result = "";
@@ -274,10 +350,16 @@ public class driver extends javax.swing.JFrame {
     }
     
     public void loadDB() {
+        
+        /*
+            I.S. digunakan untuk membaca DATABASE.
+            F.S. telah dibacanya DATABASE dan ditampung ke dalam variable
+        */
+        
         listModel_1 = new DefaultListModel<>();
         listModel_2 = new DefaultListModel<>();
         listModel_3 = new DefaultListModel<>();
-        listModel_5 = new DefaultListModel<>();
+        listModel_4 = new DefaultListModel<>();
         ArrayListManager = new ArrayList<>();
         ArrayListSubordinate = new ArrayList<>();
         ArrayListProject = new ArrayList<>();
@@ -315,6 +397,7 @@ public class driver extends javax.swing.JFrame {
             
             int id = 0;
             
+            // load customer
             st = "SELECT * FROM customer";
             rs = stmt.executeQuery(st);
             while (rs.next()) {
@@ -324,6 +407,7 @@ public class driver extends javax.swing.JFrame {
                 ArrayListCustomer.add(new Customer(Integer.toString(id_cus), nama_cus, Integer.toString(id_proj)));
             }
             
+            // load subproject
             st = "SELECT * FROM subproject";
             rs = stmt.executeQuery(st);
             while (rs.next()) {
@@ -332,9 +416,10 @@ public class driver extends javax.swing.JFrame {
                 boolean isDone = rs.getBoolean("isDone");
                 int id_proj = rs.getInt("id_project");
                 ArrayListSubProject.add(new subProject(Integer.toString(id), nama, isDone, Integer.toString(id_proj)));
-                listModel_5.addElement(nama);
+                listModel_4.addElement(nama);
             }
             
+            // load project
             st = "SELECT * FROM project";
             rs = stmt.executeQuery(st);
             while (rs.next()) {
@@ -393,13 +478,19 @@ public class driver extends javax.swing.JFrame {
             ListManager.setModel(listModel_1);
             ListPekerja.setModel(listModel_2);
             ListProject.setModel(listModel_3);
-            ListSubproject.setModel(listModel_5);
+            ListSubproject.setModel(listModel_4);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
     private void launch() {
+        
+        /*
+            I.S. funsgi pertama yang dijalankan sebagai initiator
+            F.S. ...
+        */
+        
         editManagerButton.setEnabled(false);
         editPekerjaButton.setEnabled(false);
         hapusDataButton.setEnabled(false);
@@ -409,15 +500,15 @@ public class driver extends javax.swing.JFrame {
         editProjectButton.addActionListener(new newProjectHancler());
         newSubProjectButton.addActionListener(new newSubProjectHandler());
         editSubProjectButton.addActionListener(new newSubProjectHandler());
-        ListManager.addListSelectionListener(new selectHandler1());
-        ListPekerja.addListSelectionListener(new selectHandler2());
-        ListProject.addListSelectionListener(new selectHandlerProject());
-        ListSubproject.addListSelectionListener(new selectHandlerSubProject());
-        newManagerButton.addActionListener(new handler());
-        newPekerjaButton.addActionListener(new handler());
-        editManagerButton.addActionListener(new handler());
-        editPekerjaButton.addActionListener(new handler());
-        hapusDataButton.addActionListener(new deleteHandler());
+        ListManager.addListSelectionListener(new selectManagerHandler());
+        ListPekerja.addListSelectionListener(new selectSubordinateHandler());
+        ListProject.addListSelectionListener(new selectProjectHandler());
+        ListSubproject.addListSelectionListener(new selectSubProjectHandler());
+        newManagerButton.addActionListener(new editEmployeeHandler());
+        newPekerjaButton.addActionListener(new editEmployeeHandler());
+        editManagerButton.addActionListener(new editEmployeeHandler());
+        editPekerjaButton.addActionListener(new editEmployeeHandler());
+        hapusDataButton.addActionListener(new deleteEmployeeHandler());
         loadDB();
     }
     
