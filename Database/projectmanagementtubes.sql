@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 31, 2021 at 04:20 PM
+-- Generation Time: Jan 02, 2022 at 01:28 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -61,7 +61,7 @@ INSERT INTO `manager` (`id`, `nama`, `jabatan`, `headof`) VALUES
 (1, 'aku adalah lelaki', 'Manager', 'admin'),
 (2, 'aduh mamank', 'Manager', 'admin'),
 (36, 'aku bukan diriku', 'Manager', 'marketing'),
-(47, 'nama saya siapa', 'Manager', 'aduh abdul');
+(56, 'nama saya siapa', 'Manager', 'aduh abdul');
 
 -- --------------------------------------------------------
 
@@ -84,9 +84,9 @@ CREATE TABLE `project` (
 --
 
 INSERT INTO `project` (`id_project`, `nama`, `timeStart`, `timeEnd`, `manager`, `worker`, `subProject`) VALUES
-(1, 'Maintain Google', '2021-12-08', '2021-12-23', 'aku adalah lelaki', '[\"saya gila\", \"eya eyaaaa\", \"aku adalah diriku\"]', '[\"tukang AC\", \"cuci Kulkas\", \"tim doa\"]'),
+(1, 'Maintain Google', '2021-12-08', '2021-12-23', 'aku adalah lelaki', '[\"saya gila\", \"eya eyaaaa\", \"aku adalah diriku\"]', '[\"tukang AC\",\"cuci Kulkas\",\"tim doa\",]'),
 (2, 'Facebook Vunerability', '2021-12-08', '2021-12-29', 'aduh mamank', '[\"saya gila\"]', '[\"matiin lampu\", \"cuci piring\"]'),
-(3, 'coba nih pasti', '2021-12-08', '2021-12-23', 'aku adalah lelaki', '[\"saya gila\"]', '[\"masihh\", \"b\"]'),
+(3, 'coba nih pasti', '2021-12-08', '2021-12-23', 'aku adalah lelaki', '[\"saya gila\"]', '[\"bener kah?\",\"b\",]'),
 (4, 'YESSSs', '2021-12-31', '2022-12-31', 'nama saya siapa', '[\"eya eyaaaa\", \"saya gila\"]', '[]'),
 (5, 'bisa nih liatin aja', '2021-12-31', '2022-12-31', 'aku bukan diriku', '[\"eya eyaaaa\", \"aku adalah diriku\", \"aku ingat namaku\"]', '[]');
 
@@ -111,7 +111,7 @@ INSERT INTO `subordinate` (`id`, `nama`, `jabatan`, `divisi`) VALUES
 (2, 'eya eyaaaa', 'subordinate', 'database'),
 (33, 'aku adalah diriku', 'subordinate', 'project gajelas'),
 (37, 'aku ingat namaku', 'subordinate', 'admin'),
-(41, 'saya gila', 'subordinate', 'networking');
+(43, 'saya gila', 'subordinate', 'networking');
 
 -- --------------------------------------------------------
 
@@ -131,12 +131,12 @@ CREATE TABLE `subproject` (
 --
 
 INSERT INTO `subproject` (`id`, `nama`, `isDone`, `id_project`) VALUES
-(1, 'tukang AC', 0, 1),
-(2, 'cuci Kulkas', 0, 1),
-(3, 'tim doa', 0, 1),
+(1, 'tukang AC', 1, 1),
+(2, 'cuci Kulkas', 1, 1),
+(3, 'tim doa', 1, 1),
 (4, 'cuci piring', 0, 2),
 (5, 'matiin lampu', 0, 2),
-(13, 'masihh', 0, 3),
+(13, 'bener kah?', 0, 3),
 (14, 'b', 0, 3);
 
 --
@@ -189,7 +189,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `manager`
 --
 ALTER TABLE `manager`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `project`
@@ -201,7 +201,7 @@ ALTER TABLE `project`
 -- AUTO_INCREMENT for table `subordinate`
 --
 ALTER TABLE `subordinate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `subproject`
