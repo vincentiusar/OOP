@@ -1,6 +1,6 @@
 package Employee;
 
-public class Employee {
+public abstract class Employee {
     private String id, nama, jabatan;
 
     public Employee(String id, String nama, String jabatan){
