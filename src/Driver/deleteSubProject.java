@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class deleteSubProject extends javax.swing.JFrame {
     /**
      * Creates new form deleteSubProject
      */
-    
+    String nama,induk;
     private class handler implements ActionListener {
         
         private ArrayList<String> toArrayString(String target) {
@@ -57,8 +58,40 @@ public class deleteSubProject extends javax.swing.JFrame {
                 conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
                 stmt = conn.createStatement();
                 
+                String st = "";
+                st = "SELECT id_project FROM project WHERE nama = '" + induk + "'";
+                rs = stmt.executeQuery(st);
+                int id = 0;
+                while (rs.next()) {
+                    id = rs.getInt("id_project");
+                }
+                st = "DELETE FROM subproject WHERE nama = ?";
+                PreparedStatement ps = conn.prepareStatement(st);
+                ps.setString(1, nama);
+                ps.execute();
                 
-
+                st = "SELECT subproject FROM project WHERE id_project = " + id;
+                rs = stmt.executeQuery(st);
+                String sbj = "";
+                while (rs.next()) {
+                    sbj = rs.getString("subProject");
+                }
+                ArrayList<String> proj = new ArrayList<>();
+                proj = toArrayString(sbj);
+                int tmp = proj.indexOf(nama);
+                proj.remove(tmp);
+                String sp = "[";
+                for (String s : proj) {
+                    sp += "\"" + s + "\",";
+                }
+                sp += "]";
+                
+                st = "UPDATE project SET subProject = ? WHERE id_project = ?";
+                ps = conn.prepareStatement(st);
+                ps.setString(1, sp);
+                ps.setInt(2, id);
+                ps.execute();
+                
                 stmt.close();
                 conn.close();
             } catch (Exception a) {
@@ -79,6 +112,8 @@ public class deleteSubProject extends javax.swing.JFrame {
     }
     
     void launch(String nama, String induk) {
+        this.nama = nama;
+        this.induk = induk;
         cancelButton.addActionListener(new handler2());
         OKButton.addActionListener(new handler());
     }

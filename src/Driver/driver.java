@@ -270,6 +270,21 @@ public class driver extends javax.swing.JFrame {
         }
     }
     
+    private class deleteSubProjectHandler implements ActionListener {
+        
+        /*
+            I.S. digunakan untuk memanggil layer baru. Fungsinya menghapus data
+                 employee yang ada.
+            F.S. terhapus data employee.
+        */
+        
+        public void actionPerformed(ActionEvent e) {
+            deleteSubProject mee;
+            mee = new deleteSubProject(nama_sub,induk);
+            mee.setVisible(true);
+        }
+    }
+    
     String nama_proj, managerProject;
     LocalDate start, end;
     ArrayList<String> workers;
@@ -509,6 +524,7 @@ public class driver extends javax.swing.JFrame {
         editManagerButton.addActionListener(new editEmployeeHandler());
         editPekerjaButton.addActionListener(new editEmployeeHandler());
         hapusDataButton.addActionListener(new deleteEmployeeHandler());
+        hapusSubProjectButton.addActionListener(new deleteSubProjectHandler());
         loadDB();
     }
     
@@ -575,6 +591,7 @@ public class driver extends javax.swing.JFrame {
         showIndukProject = new javax.swing.JLabel();
         statusSubProject = new javax.swing.JLabel();
         showStatusSubProject = new javax.swing.JLabel();
+        hapusSubProjectButton = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
@@ -839,6 +856,8 @@ public class driver extends javax.swing.JFrame {
 
         statusSubProject.setText("Status SubProject");
 
+        hapusSubProjectButton.setText("Hapus SubProject");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -851,15 +870,20 @@ public class driver extends javax.swing.JFrame {
                         .addComponent(newSubProjectButton)
                         .addGap(18, 18, 18)
                         .addComponent(editSubProjectButton)))
-                .addGap(30, 30, 30)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(namaSubProjectLabel)
-                    .addComponent(showNamaSubProject)
-                    .addComponent(indukProjectLabel)
-                    .addComponent(showIndukProject)
-                    .addComponent(statusSubProject)
-                    .addComponent(showStatusSubProject))
-                .addContainerGap(258, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(namaSubProjectLabel)
+                            .addComponent(showNamaSubProject)
+                            .addComponent(indukProjectLabel)
+                            .addComponent(showIndukProject)
+                            .addComponent(statusSubProject)
+                            .addComponent(showStatusSubProject)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(hapusSubProjectButton)))
+                .addContainerGap(250, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -878,12 +902,14 @@ public class driver extends javax.swing.JFrame {
                         .addGap(23, 23, 23)
                         .addComponent(statusSubProject)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(showStatusSubProject)))
+                        .addComponent(showStatusSubProject)
+                        .addGap(61, 61, 61)
+                        .addComponent(hapusSubProjectButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newSubProjectButton)
                     .addComponent(editSubProjectButton))
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         employeeTabs.addTab("Sub-Project", jPanel3);
@@ -963,6 +989,7 @@ public class driver extends javax.swing.JFrame {
     private javax.swing.JTabbedPane employeeTabs;
     private javax.swing.JButton hapusDataButton;
     private javax.swing.JButton hapusProjectButton;
+    private javax.swing.JButton hapusSubProjectButton;
     private javax.swing.JLabel indukProjectLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

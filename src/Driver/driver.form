@@ -545,16 +545,24 @@
                               <Component id="editSubProjectButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="namaSubProjectLabel" min="-2" max="-2" attributes="0"/>
-                          <Component id="showNamaSubProject" min="-2" max="-2" attributes="0"/>
-                          <Component id="indukProjectLabel" min="-2" max="-2" attributes="0"/>
-                          <Component id="showIndukProject" min="-2" max="-2" attributes="0"/>
-                          <Component id="statusSubProject" min="-2" max="-2" attributes="0"/>
-                          <Component id="showStatusSubProject" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="namaSubProjectLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="showNamaSubProject" min="-2" max="-2" attributes="0"/>
+                                  <Component id="indukProjectLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="showIndukProject" min="-2" max="-2" attributes="0"/>
+                                  <Component id="statusSubProject" min="-2" max="-2" attributes="0"/>
+                                  <Component id="showStatusSubProject" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="hapusSubProjectButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace pref="258" max="32767" attributes="0"/>
+                      <EmptySpace pref="250" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -576,6 +584,8 @@
                               <Component id="statusSubProject" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="showStatusSubProject" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
+                              <Component id="hapusSubProjectButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -583,7 +593,7 @@
                           <Component id="newSubProjectButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="editSubProjectButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="61" max="32767" attributes="0"/>
+                      <EmptySpace pref="77" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -644,6 +654,11 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="showStatusSubProject">
+            </Component>
+            <Component class="javax.swing.JButton" name="hapusSubProjectButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Hapus SubProject"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
