@@ -270,6 +270,22 @@ public class driver extends javax.swing.JFrame {
         }
     }
     
+    private class deleteProjectHandler implements ActionListener {
+        
+        /*
+            I.S. digunakan untuk memanggil layer baru. Fungsinya menghapus data
+                 employee yang ada.
+            F.S. terhapus data employee.
+        */
+        
+        public void actionPerformed(ActionEvent e) {
+            deleteProjectLayer mee;
+            mee = new deleteProjectLayer(nama_proj);
+            mee.setVisible(true);
+        }
+    }
+    
+    
     private class deleteSubProjectHandler implements ActionListener {
         
         /*
@@ -525,6 +541,7 @@ public class driver extends javax.swing.JFrame {
         editPekerjaButton.addActionListener(new editEmployeeHandler());
         hapusDataButton.addActionListener(new deleteEmployeeHandler());
         hapusSubProjectButton.addActionListener(new deleteSubProjectHandler());
+        hapusProjectButton.addActionListener(new deleteProjectHandler());
         loadDB();
     }
     
