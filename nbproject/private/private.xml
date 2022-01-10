@@ -5,12 +5,8 @@
         <group>
             <file>file:/D:/Java%20IDE/project/PMO/src/Driver/editEmployeeLayer.java</file>
             <file>file:/D:/Java%20IDE/project/PMO/src/Driver/editProjectLayer.java</file>
-            <file>file:/D:/Java%20IDE/project/PMO/src/Employee/Employee.java</file>
-            <file>file:/D:/Java%20IDE/project/PMO/src/Driver/driver.java</file>
             <file>file:/D:/Java%20IDE/project/PMO/src/Driver/editSubProjectLayer.java</file>
-            <file>file:/D:/Java%20IDE/project/PMO/src/Driver/deleteSubProject.java</file>
-            <file>file:/D:/Java%20IDE/project/PMO/src/Project/Project.java</file>
-            <file>file:/D:/Java%20IDE/project/PMO/src/Driver/deleteEmployee.java</file>
+            <file>file:/D:/Java%20IDE/project/PMO/src/Driver/errorLayer.java</file>
         </group>
     </open-files>
 </project-private>

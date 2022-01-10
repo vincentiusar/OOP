@@ -49,6 +49,7 @@ public class editEmployeeLayer extends javax.swing.JFrame {
             try {
                 conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
                 stmt = conn.createStatement();
+
                 now_nama = namaTextField.getText().trim();
                 now_jabatan = "";
                 if (radioManager.isSelected()) {
@@ -57,6 +58,12 @@ public class editEmployeeLayer extends javax.swing.JFrame {
                     now_jabatan = "subordinate";
                 }
                 now_divisi = divTextField.getText().trim();
+                if ("".equals(now_nama) || (!radioManager.isSelected() && !radioSubor.isSelected()) || "".equals(now_divisi)) {
+                    errorLayer mee = new errorLayer();
+                    mee.setVisible(true);
+                    return;
+                }
+                
                 
                 if (isNew) {        // jika datanya baru, lakukan insert
                     String st = "";

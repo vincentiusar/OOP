@@ -1,9 +1,6 @@
 package Project;
 
-import Employee.Employee;
 import subProject.subProject;
-import java.util.Date;
-import Customer.Customer;
 import Manager.Manager;
 import Subordinate.Subordinate;
 import java.time.LocalDate;

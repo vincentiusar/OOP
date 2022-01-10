@@ -68,7 +68,7 @@ public class deleteProjectLayer extends javax.swing.JFrame {
                 stmt = conn.createStatement();
                 
                 String st = "";
-                st = "SELECT subproject FROM project WHERE nama ='"+nama+"'";
+                st = "SELECT subproject FROM project WHERE nama = '" + nama + "'";
                 rs = stmt.executeQuery(st);
                 String sj  = "";
                 while (rs.next()) {
@@ -78,13 +78,13 @@ public class deleteProjectLayer extends javax.swing.JFrame {
                 ArrayList<String> rej = new ArrayList<>();
                 rej = toArrayString(sj);
                 for (String s : rej){
-                    st = "DELETE FROM subproject WHERE nama =?";
+                    st = "DELETE FROM subproject WHERE nama = ?";
                     PreparedStatement ps = conn.prepareStatement(st);
                     ps.setString(1, s);
                     ps.execute();
                 }
                 
-                st = "DELETE FROM project WHERE nama =?";
+                st = "DELETE FROM project WHERE nama = ?";
                 PreparedStatement ps = conn.prepareStatement(st);
                 ps.setString(1, nama);
                 ps.execute();

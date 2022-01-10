@@ -6,8 +6,6 @@
 package Driver;
 
 import static Driver.driver.me;
-import static Driver.editEmployeeLayer.conn;
-import static Driver.editEmployeeLayer.stmt;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -16,10 +14,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import javax.swing.SpinnerDateModel;
 import javax.swing.SwingUtilities;
 
 /**
@@ -54,6 +50,13 @@ public class editProjectLayer extends javax.swing.JFrame {
                 } else {
                     st = "UPDATE project SET nama = ?, timeStart = ?, timeEnd = ?, manager = ?, worker = ? WHERE nama = ?";
                 }
+                
+                if ("".equals(namaProjectField.getText().trim()) || "".equals(managerCombo.getSelectedItem().toString()) || dateStartSpinner.getValue() == null || dateEndSpinner.getValue() == null) {
+                    errorLayer mee = new errorLayer();
+                    mee.setVisible(true);
+                    return;
+                }
+                
                 String worker = "[";
                 ArrayList<String> tmp = new ArrayList<>();
                 if (!"-------".equals(subordinateCombo1.getSelectedItem().toString())) {

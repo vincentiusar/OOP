@@ -132,6 +132,7 @@ public class driver extends javax.swing.JFrame {
             if (!e.getValueIsAdjusting()) {
                 try {
                     editProjectButton.setEnabled(true);
+                    hapusProjectButton.setEnabled(true);
                     String namaSelected = ListProject.getSelectedValue().toString();
                     subOfProj_Model = new DefaultListModel<>(); suborOfProj_Model = new DefaultListModel<>(); workers = new ArrayList<>();
                     for (Project P : ArrayListProject) {
@@ -158,12 +159,14 @@ public class driver extends javax.swing.JFrame {
                             suborOfProject.setModel(suborOfProj_Model);
 
                             if (count == P.getSubproject().size() && P.getSubproject().size() != 0) showProjectDone.setText("SELESAI");
+                            else if (count != P.getSubproject().size() && P.getSubproject().size() != 0 && end.compareTo(LocalDate.now()) < 0) showProjectDone.setText("BELUM (Delayed)");
                             else showProjectDone.setText("BELUM");
                         }
                     }
                 } catch (NullPointerException en) {
                     System.out.print("");
                     editProjectButton.setEnabled(false);
+                    hapusProjectButton.setEnabled(false);
                 }
             }
         }
@@ -295,8 +298,8 @@ public class driver extends javax.swing.JFrame {
         */
         
         public void actionPerformed(ActionEvent e) {
-            deleteSubProject mee;
-            mee = new deleteSubProject(nama_sub,induk);
+            deleteSubProjectLayer mee;
+            mee = new deleteSubProjectLayer(nama_sub,induk);
             mee.setVisible(true);
         }
     }
@@ -527,6 +530,8 @@ public class driver extends javax.swing.JFrame {
         hapusDataButton.setEnabled(false);
         editProjectButton.setEnabled(false);
         editSubProjectButton.setEnabled(false);
+        hapusProjectButton.setEnabled(false);
+        hapusSubProjectButton.setEnabled(false);
         newProjectButton.addActionListener(new newProjectHancler());
         editProjectButton.addActionListener(new newProjectHancler());
         newSubProjectButton.addActionListener(new newSubProjectHandler());
@@ -746,13 +751,13 @@ public class driver extends javax.swing.JFrame {
 
         statusLabel.setText("Status");
 
-        showNamaProject.setText("null");
+        showNamaProject.setText(" ");
 
-        showTanggalMulai.setText("null");
+        showTanggalMulai.setText(" ");
 
-        showTanggalAkhir.setText("null");
+        showTanggalAkhir.setText(" ");
 
-        showManager.setText("null");
+        showManager.setText(" ");
 
         subOfProject.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -789,7 +794,6 @@ public class driver extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pekerjaLabel)
-                    .addComponent(showManager)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -799,14 +803,15 @@ public class driver extends javax.swing.JFrame {
                             .addComponent(showTanggalMulai)
                             .addComponent(tanggalMulaiLabel)
                             .addComponent(deadlineLabel)
-                            .addComponent(managerLabel))
+                            .addComponent(managerLabel)
+                            .addComponent(showManager))
                         .addGap(98, 98, 98)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(showProjectDone)
-                            .addComponent(statusLabel)
                             .addComponent(subProjectLabel)
+                            .addComponent(statusLabel)
+                            .addComponent(showProjectDone, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -829,20 +834,25 @@ public class driver extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(deadlineLabel))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(statusLabel)
-                            .addComponent(showTanggalAkhir))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(managerLabel)
-                            .addComponent(showProjectDone))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(showManager)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(pekerjaLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(43, 43, 43)
+                                .addComponent(statusLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showProjectDone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(211, 211, 211))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showTanggalAkhir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(managerLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showManager)
+                                .addGap(18, 18, 18)
+                                .addComponent(pekerjaLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(59, 59, 59)
@@ -850,8 +860,8 @@ public class driver extends javax.swing.JFrame {
                             .addComponent(newProjectButton)
                             .addComponent(editProjectButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(hapusProjectButton)))
-                .addContainerGap(52, Short.MAX_VALUE))
+                        .addComponent(hapusProjectButton)
+                        .addGap(32, 32, 32))))
         );
 
         employeeTabs.addTab("Project", jPanel2);

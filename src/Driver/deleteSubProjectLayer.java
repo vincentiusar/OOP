@@ -20,7 +20,7 @@ import javax.swing.SwingUtilities;
  *
  * @author Vincentius
  */
-public class deleteSubProject extends javax.swing.JFrame {
+public class deleteSubProjectLayer extends javax.swing.JFrame {
 
     static final String DB_URL = "jdbc:mysql://localhost/projectmanagementtubes";
     static final String DB_USER = "root";
@@ -30,9 +30,10 @@ public class deleteSubProject extends javax.swing.JFrame {
     static ResultSet rs;
     
     /**
-     * Creates new form deleteSubProject
+     * Creates new form deleteSubProjectLayer
      */
-    String nama,induk;
+    String nama, induk;
+
     private class handler implements ActionListener {
         
         private ArrayList<String> toArrayString(String target) {
@@ -118,7 +119,7 @@ public class deleteSubProject extends javax.swing.JFrame {
         OKButton.addActionListener(new handler());
     }
     
-    public deleteSubProject(String nama, String induk) {
+    public deleteSubProjectLayer(String nama, String induk) {
         initComponents();
         launch(nama, induk);
     }

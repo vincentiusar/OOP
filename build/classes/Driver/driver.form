@@ -286,7 +286,6 @@
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="pekerjaLabel" min="-2" max="-2" attributes="0"/>
-                          <Component id="showManager" min="-2" max="-2" attributes="0"/>
                           <Component id="jScrollPane5" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -297,17 +296,18 @@
                                   <Component id="tanggalMulaiLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="deadlineLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="managerLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="showManager" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="showProjectDone" min="-2" max="-2" attributes="0"/>
-                                  <Component id="statusLabel" min="-2" max="-2" attributes="0"/>
                                   <Component id="subProjectLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="statusLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="showProjectDone" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
                                   <Component id="jScrollPane4" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="72" max="32767" attributes="0"/>
+                      <EmptySpace pref="74" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -335,22 +335,28 @@
                                   </Group>
                                   <Component id="jScrollPane4" min="-2" pref="92" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="statusLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="showTanggalAkhir" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                                      <Component id="statusLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="showProjectDone" max="32767" attributes="0"/>
+                                      <EmptySpace min="-2" pref="211" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="showTanggalAkhir" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="managerLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="showManager" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                      <Component id="pekerjaLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jScrollPane5" min="-2" pref="99" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="managerLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="showProjectDone" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="showManager" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="pekerjaLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane5" min="-2" pref="99" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jScrollPane3" min="-2" pref="173" max="-2" attributes="0"/>
@@ -361,9 +367,9 @@
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="hapusProjectButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="52" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -451,22 +457,22 @@
             </Component>
             <Component class="javax.swing.JLabel" name="showNamaProject">
               <Properties>
-                <Property name="text" type="java.lang.String" value="null"/>
+                <Property name="text" type="java.lang.String" value=" "/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="showTanggalMulai">
               <Properties>
-                <Property name="text" type="java.lang.String" value="null"/>
+                <Property name="text" type="java.lang.String" value=" "/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="showTanggalAkhir">
               <Properties>
-                <Property name="text" type="java.lang.String" value="null"/>
+                <Property name="text" type="java.lang.String" value=" "/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="showManager">
               <Properties>
-                <Property name="text" type="java.lang.String" value="null"/>
+                <Property name="text" type="java.lang.String" value=" "/>
               </Properties>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane4">

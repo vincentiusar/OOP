@@ -67,6 +67,13 @@ public class editSubProjectLayer extends javax.swing.JFrame {
                 } else {
                     st = "UPDATE subproject SET nama = ?, isDone = ?, id_project = ? WHERE nama = ?";
                 }
+                
+                if ("".equals(namaTextField.getText().trim()) || !selesaiRadio.isSelected() || !belumSelesaiRadio.isSelected()) {
+                    errorLayer mee = new errorLayer();
+                    mee.setVisible(true);
+                    return;
+                }
+                
                 PreparedStatement ps = conn.prepareStatement(st);     
                 ps.setString(1, namaTextField.getText().trim());
                 ps.setBoolean(2, selesaiRadio.isSelected());
