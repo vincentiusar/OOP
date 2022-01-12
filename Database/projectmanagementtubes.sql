@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 02, 2022 at 01:28 PM
+-- Generation Time: Jan 12, 2022 at 09:43 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -24,6 +24,25 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `company`
+--
+
+CREATE TABLE `company` (
+  `id_company` int(11) NOT NULL,
+  `nama` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `company`
+--
+
+INSERT INTO `company` (`id_company`, `nama`) VALUES
+(0, 'ajigile'),
+(1, 'ajikonde');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `customer`
 --
 
@@ -38,7 +57,13 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id_cus`, `nama`, `id_project`) VALUES
-(1, 'Google.com', 1);
+(1, 'google.com', 1),
+(4, 'Facebook.com', 2),
+(5, 'tukang bakso coba', 3),
+(6, 'tukang yes', 4),
+(7, 'tukang coba coba', 5),
+(8, 'orang ngaret', 6),
+(10, 'tukang bakso coba coba', 14);
 
 -- --------------------------------------------------------
 
@@ -47,21 +72,22 @@ INSERT INTO `customer` (`id_cus`, `nama`, `id_project`) VALUES
 --
 
 CREATE TABLE `manager` (
-  `id` int(10) NOT NULL,
+  `id` int(11) NOT NULL,
   `nama` varchar(60) NOT NULL,
   `jabatan` varchar(30) NOT NULL,
-  `headof` varchar(30) NOT NULL
+  `headof` varchar(30) NOT NULL,
+  `id_company` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `manager`
 --
 
-INSERT INTO `manager` (`id`, `nama`, `jabatan`, `headof`) VALUES
-(1, 'aku adalah lelaki', 'Manager', 'admin'),
-(2, 'aduh mamank', 'Manager', 'admin'),
-(36, 'aku bukan diriku', 'Manager', 'marketing'),
-(56, 'nama saya siapa', 'Manager', 'aduh abdul');
+INSERT INTO `manager` (`id`, `nama`, `jabatan`, `headof`, `id_company`) VALUES
+(2, 'aduh mamank', 'Manager', 'admin', 0),
+(57, 'nama saya siapa', 'Manager', 'aduh abdul', 0),
+(61, 'aku bukan diriku', 'Manager', 'marketing', 0),
+(63, 'aku adalah lelaki', 'Manager', 'admin', 0);
 
 -- --------------------------------------------------------
 
@@ -86,9 +112,11 @@ CREATE TABLE `project` (
 INSERT INTO `project` (`id_project`, `nama`, `timeStart`, `timeEnd`, `manager`, `worker`, `subProject`) VALUES
 (1, 'Maintain Google', '2021-12-08', '2021-12-23', 'aku adalah lelaki', '[\"saya gila\", \"eya eyaaaa\", \"aku adalah diriku\"]', '[\"tukang AC\",\"cuci Kulkas\",\"tim doa\",]'),
 (2, 'Facebook Vunerability', '2021-12-08', '2021-12-29', 'aduh mamank', '[\"saya gila\"]', '[\"matiin lampu\", \"cuci piring\"]'),
-(3, 'coba nih pasti', '2021-12-08', '2021-12-23', 'aku adalah lelaki', '[\"saya gila\"]', '[\"bener kah?\",\"b\",]'),
-(4, 'YESSSs', '2021-12-31', '2022-12-31', 'nama saya siapa', '[\"eya eyaaaa\", \"saya gila\"]', '[]'),
-(5, 'bisa nih liatin aja', '2021-12-31', '2022-12-31', 'aku bukan diriku', '[\"eya eyaaaa\", \"aku adalah diriku\", \"aku ingat namaku\"]', '[]');
+(3, 'coba nih pasti', '2021-12-08', '2021-12-23', 'aku adalah lelaki', '[\"aku adalah diriku\"]', '[\"bener kah?\",\"baa\",]'),
+(4, 'YESSSs', '2021-12-31', '2022-12-31', 'nama saya siapa', '[\"eya eyaaaa\", \"saya gila\"]', '[\"yes 1\"]'),
+(5, 'bisa nih liatin aja', '2021-12-31', '2022-12-31', 'aku bukan diriku', '[\"eya eyaaaa\", \"aku adalah diriku\", \"aku ingat namaku\"]', '[\"makan nasi\"]'),
+(6, 'coba delay', '2022-01-07', '2022-01-08', 'aduh mamank', '[\"aku adalah diriku\"]', '[\"coba delayed 1\"]'),
+(14, 'coba makan bakso borax', '2022-01-12', '2022-01-12', 'aku adalah lelaki', '[\"saya gila\"]', '[\"mati makan borax\"]');
 
 -- --------------------------------------------------------
 
@@ -100,18 +128,19 @@ CREATE TABLE `subordinate` (
   `id` int(11) NOT NULL,
   `nama` varchar(60) NOT NULL,
   `jabatan` varchar(50) NOT NULL,
-  `divisi` varchar(50) NOT NULL
+  `divisi` varchar(50) NOT NULL,
+  `id_company` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `subordinate`
 --
 
-INSERT INTO `subordinate` (`id`, `nama`, `jabatan`, `divisi`) VALUES
-(2, 'eya eyaaaa', 'subordinate', 'database'),
-(33, 'aku adalah diriku', 'subordinate', 'project gajelas'),
-(37, 'aku ingat namaku', 'subordinate', 'admin'),
-(43, 'saya gila', 'subordinate', 'networking');
+INSERT INTO `subordinate` (`id`, `nama`, `jabatan`, `divisi`, `id_company`) VALUES
+(2, 'eya eyaaaa', 'subordinate', 'database', 0),
+(33, 'aku adalah diriku', 'subordinate', 'project gajelas', 0),
+(37, 'aku ingat namaku', 'subordinate', 'admin', 0),
+(52, 'saya gila', 'subordinate', 'networking', 1);
 
 -- --------------------------------------------------------
 
@@ -135,13 +164,23 @@ INSERT INTO `subproject` (`id`, `nama`, `isDone`, `id_project`) VALUES
 (2, 'cuci Kulkas', 1, 1),
 (3, 'tim doa', 1, 1),
 (4, 'cuci piring', 0, 2),
-(5, 'matiin lampu', 0, 2),
+(5, 'matiin lampu', 1, 2),
 (13, 'bener kah?', 0, 3),
-(14, 'b', 0, 3);
+(14, 'baa', 0, 3),
+(15, 'makan nasi', 1, 5),
+(16, 'coba delayed 1', 0, 6),
+(17, 'yes 1', 0, 4),
+(18, 'mati makan borax', 0, 14);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `company`
+--
+ALTER TABLE `company`
+  ADD PRIMARY KEY (`id_company`);
 
 --
 -- Indexes for table `customer`
@@ -154,7 +193,8 @@ ALTER TABLE `customer`
 -- Indexes for table `manager`
 --
 ALTER TABLE `manager`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_company` (`id_company`);
 
 --
 -- Indexes for table `project`
@@ -166,7 +206,8 @@ ALTER TABLE `project`
 -- Indexes for table `subordinate`
 --
 ALTER TABLE `subordinate`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_company` (`id_company`);
 
 --
 -- Indexes for table `subproject`
@@ -180,34 +221,40 @@ ALTER TABLE `subproject`
 --
 
 --
+-- AUTO_INCREMENT for table `company`
+--
+ALTER TABLE `company`
+  MODIFY `id_company` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id_cus` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_cus` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `manager`
 --
 ALTER TABLE `manager`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `id_project` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_project` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `subordinate`
 --
 ALTER TABLE `subordinate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `subproject`
 --
 ALTER TABLE `subproject`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
@@ -218,6 +265,18 @@ ALTER TABLE `subproject`
 --
 ALTER TABLE `customer`
   ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`id_project`) REFERENCES `project` (`id_project`);
+
+--
+-- Constraints for table `manager`
+--
+ALTER TABLE `manager`
+  ADD CONSTRAINT `manager_ibfk_1` FOREIGN KEY (`id_company`) REFERENCES `company` (`id_company`);
+
+--
+-- Constraints for table `subordinate`
+--
+ALTER TABLE `subordinate`
+  ADD CONSTRAINT `subordinate_ibfk_1` FOREIGN KEY (`id_company`) REFERENCES `company` (`id_company`);
 
 --
 -- Constraints for table `subproject`

@@ -618,6 +618,9 @@ public class driver extends javax.swing.JFrame {
         statusSubProject = new javax.swing.JLabel();
         showStatusSubProject = new javax.swing.JLabel();
         hapusSubProjectButton = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        companyList = new javax.swing.JList<>();
 
         jLabel1.setText("jLabel1");
 
@@ -685,7 +688,7 @@ public class driver extends javax.swing.JFrame {
                             .addComponent(showNamaLabel)
                             .addComponent(showJabatanLabel)
                             .addComponent(showDivisiLabel))))
-                .addContainerGap(125, Short.MAX_VALUE))
+                .addContainerGap(127, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -955,6 +958,32 @@ public class driver extends javax.swing.JFrame {
 
         employeeTabs.addTab("Sub-Project", jPanel3);
 
+        companyList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane7.setViewportView(companyList);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(390, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(118, Short.MAX_VALUE))
+        );
+
+        employeeTabs.addTab("Company", jPanel4);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1022,6 +1051,7 @@ public class driver extends javax.swing.JFrame {
     private javax.swing.JList<String> ListProject;
     private javax.swing.JLabel ListProjectLabel;
     private javax.swing.JList<String> ListSubproject;
+    private javax.swing.JList<String> companyList;
     private javax.swing.JLabel customerLabel;
     private javax.swing.JLabel deadlineLabel;
     private javax.swing.JButton editManagerButton;
@@ -1037,12 +1067,14 @@ public class driver extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JLabel managerLabel;
     private javax.swing.JLabel namaProjectLabel;
     private javax.swing.JLabel namaSubProjectLabel;
