@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2022 at 09:43 AM
+-- Generation Time: Jan 12, 2022 at 12:27 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -38,7 +38,8 @@ CREATE TABLE `company` (
 
 INSERT INTO `company` (`id_company`, `nama`) VALUES
 (0, 'ajigile'),
-(1, 'ajikonde');
+(1, 'ajikonde brok'),
+(4, 'mamank resink');
 
 -- --------------------------------------------------------
 
@@ -87,7 +88,8 @@ INSERT INTO `manager` (`id`, `nama`, `jabatan`, `headof`, `id_company`) VALUES
 (2, 'aduh mamank', 'Manager', 'admin', 0),
 (57, 'nama saya siapa', 'Manager', 'aduh abdul', 0),
 (61, 'aku bukan diriku', 'Manager', 'marketing', 0),
-(63, 'aku adalah lelaki', 'Manager', 'admin', 0);
+(63, 'aku adalah lelaki', 'Manager', 'admin', 0),
+(67, 'pembalap', 'Manager', 'balapan', 4);
 
 -- --------------------------------------------------------
 
@@ -224,7 +226,7 @@ ALTER TABLE `subproject`
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `id_company` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_company` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -236,7 +238,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `manager`
 --
 ALTER TABLE `manager`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `project`
@@ -248,13 +250,13 @@ ALTER TABLE `project`
 -- AUTO_INCREMENT for table `subordinate`
 --
 ALTER TABLE `subordinate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `subproject`
 --
 ALTER TABLE `subproject`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Constraints for dumped tables
