@@ -68,7 +68,7 @@ public class editSubProjectLayer extends javax.swing.JFrame {
                     st = "UPDATE subproject SET nama = ?, isDone = ?, id_project = ? WHERE nama = ?";
                 }
                 
-                if ("".equals(namaTextField.getText().trim()) || !selesaiRadio.isSelected() || !belumSelesaiRadio.isSelected()) {
+                if ("".equals(namaTextField.getText().trim()) || (!selesaiRadio.isSelected() && !belumSelesaiRadio.isSelected())) {
                     errorLayer mee = new errorLayer();
                     mee.setVisible(true);
                     return;

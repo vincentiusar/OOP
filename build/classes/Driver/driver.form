@@ -286,7 +286,6 @@
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="pekerjaLabel" min="-2" max="-2" attributes="0"/>
-                          <Component id="jScrollPane5" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="namaProjectLabel" min="-2" max="-2" attributes="0"/>
@@ -297,13 +296,16 @@
                                   <Component id="deadlineLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="managerLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="showManager" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jScrollPane5" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="customerLabel" min="-2" max="-2" attributes="0"/>
                                   <Component id="subProjectLabel" min="-2" max="-2" attributes="0"/>
                                   <Component id="statusLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="showProjectDone" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
                                   <Component id="jScrollPane4" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
+                                  <Component id="showCustomerLabel" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -341,7 +343,11 @@
                                       <Component id="statusLabel" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="showProjectDone" max="32767" attributes="0"/>
-                                      <EmptySpace min="-2" pref="211" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                                      <Component id="customerLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="showCustomerLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
@@ -526,6 +532,16 @@
               </SubComponents>
             </Container>
             <Component class="javax.swing.JLabel" name="showProjectDone">
+            </Component>
+            <Component class="javax.swing.JLabel" name="customerLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Customer Name"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="showCustomerLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value=" "/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>

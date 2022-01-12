@@ -118,7 +118,7 @@ public class driver extends javax.swing.JFrame {
             }
         }
     }
-    
+
     private class selectProjectHandler implements ListSelectionListener {
         
         /*
@@ -141,10 +141,12 @@ public class driver extends javax.swing.JFrame {
                             showTanggalMulai.setText(P.getDateStart().toString());
                             showTanggalAkhir.setText(P.getDateEnd().toString());
                             showManager.setText(P.getManager().getNama());
+                            showCustomerLabel.setText(P.getNamaCus());
                             nama_proj = P.getNama();
                             managerProject = P.getManager().getNama();
                             start = P.getDateStart();
                             end = P.getDateEnd();
+                            nama_cus = P.getNamaCus();
                             
                             int count = 0;
                             for (subProject s : P.getSubproject()) {
@@ -321,13 +323,12 @@ public class driver extends javax.swing.JFrame {
             
             editProjectLayer mee;
             if (e.getSource() == editProjectButton) {
-                
-                mee = new editProjectLayer(nama_proj, start, end, managerProject, workers);
+                mee = new editProjectLayer(nama_cus, nama_proj, start, end, managerProject, workers);
             } else {
-                nama_proj = ""; managerProject = "";
+                nama_cus = ""; nama_proj = ""; managerProject = "";
                 start = null; end = null;
                 workers = null;
-                mee = new editProjectLayer(nama_proj, start, end, managerProject, workers);
+                mee = new editProjectLayer(nama_cus, nama_proj, start, end, managerProject, workers);
             }
             mee.setVisible(true);
             
@@ -502,6 +503,7 @@ public class driver extends javax.swing.JFrame {
                         nama_cus = c.getName();
                     }
                 }
+                
                 ArrayListProject.add(new Project(id_cus, nama_cus, Integer.toString(id), nama, timeStart, timeEnd, manager, subor, sub));
                 listModel_3.addElement(nama);
             }
@@ -602,6 +604,8 @@ public class driver extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         suborOfProject = new javax.swing.JList<>();
         showProjectDone = new javax.swing.JLabel();
+        customerLabel = new javax.swing.JLabel();
+        showCustomerLabel = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         ListSubproject = new javax.swing.JList<>();
@@ -773,6 +777,10 @@ public class driver extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(suborOfProject);
 
+        customerLabel.setText("Customer Name");
+
+        showCustomerLabel.setText(" ");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -794,7 +802,6 @@ public class driver extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pekerjaLabel)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(namaProjectLabel)
@@ -804,13 +811,16 @@ public class driver extends javax.swing.JFrame {
                             .addComponent(tanggalMulaiLabel)
                             .addComponent(deadlineLabel)
                             .addComponent(managerLabel)
-                            .addComponent(showManager))
-                        .addGap(98, 98, 98)
+                            .addComponent(showManager)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(45, 45, 45)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(customerLabel)
                             .addComponent(subProjectLabel)
                             .addComponent(statusLabel)
                             .addComponent(showProjectDone, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(showCustomerLabel))))
                 .addContainerGap(74, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -840,7 +850,11 @@ public class driver extends javax.swing.JFrame {
                                 .addComponent(statusLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(showProjectDone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(211, 211, 211))
+                                .addGap(52, 52, 52)
+                                .addComponent(customerLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showCustomerLabel)
+                                .addGap(123, 123, 123))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(showTanggalAkhir)
@@ -1008,6 +1022,7 @@ public class driver extends javax.swing.JFrame {
     private javax.swing.JList<String> ListProject;
     private javax.swing.JLabel ListProjectLabel;
     private javax.swing.JList<String> ListSubproject;
+    private javax.swing.JLabel customerLabel;
     private javax.swing.JLabel deadlineLabel;
     private javax.swing.JButton editManagerButton;
     private javax.swing.JButton editPekerjaButton;
@@ -1036,6 +1051,7 @@ public class driver extends javax.swing.JFrame {
     private javax.swing.JButton newProjectButton;
     private javax.swing.JButton newSubProjectButton;
     private javax.swing.JLabel pekerjaLabel;
+    private javax.swing.JLabel showCustomerLabel;
     private javax.swing.JLabel showDivisiLabel;
     private javax.swing.JLabel showIndukProject;
     private javax.swing.JLabel showJabatanLabel;

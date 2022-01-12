@@ -84,8 +84,20 @@ public class deleteProjectLayer extends javax.swing.JFrame {
                     ps.execute();
                 }
                 
-                st = "DELETE FROM project WHERE nama = ?";
+                st = "SELECT id_project FROM project WHERE nama = '" + nama + "'";
+                rs = stmt.executeQuery(st);
+                int id = 0;
+                while (rs.next()) {
+                    id = rs.getInt("id_project");
+                }
+                
+                st = "DELETE FROM customer WHERE id_project = ?";
                 PreparedStatement ps = conn.prepareStatement(st);
+                ps.setInt(1, id);
+                ps.execute();
+                
+                st = "DELETE FROM project WHERE nama = ?";
+                ps = conn.prepareStatement(st);
                 ps.setString(1, nama);
                 ps.execute();
                 

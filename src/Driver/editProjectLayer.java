@@ -37,8 +37,11 @@ public class editProjectLayer extends javax.swing.JFrame {
      */
     
     String prev_nama = "";
+    String nama_cus = "";
     
     private class handler implements ActionListener {
+        
+        
         
         public void actionPerformed(ActionEvent e) {
             try {
@@ -105,6 +108,34 @@ public class editProjectLayer extends javax.swing.JFrame {
 
                 ps.execute();
                 
+                if (isNew) {
+                    String nama = namaProjectField.getText().trim();
+                    st = "SELECT id_project FROM project WHERE nama = '" + nama + "'";
+                    rs = stmt.executeQuery(st);
+                    int id = 0;
+                    while (rs.next()) {
+                        id = rs.getInt("id_project");
+                    }
+                    st = "INSERT INTO customer (nama, id_project) VALUES (?, ?)";
+                    ps = conn.prepareStatement(st);
+                    ps.setString(1, namaCustomerField.getText().trim());
+                    ps.setInt(2, id);
+                    ps.execute();
+                } else {
+                    String nama = namaProjectField.getText().trim();
+                    st = "SELECT id_project FROM project WHERE nama = '" + nama + "'";
+                    rs = stmt.executeQuery(st);
+                    int id = 0;
+                    while (rs.next()) {
+                        id = rs.getInt("id_project");
+                    }
+                    st = "UPDATE customer SET nama = ? WHERE id_project = ?";
+                    ps = conn.prepareStatement(st);
+                    ps.setString(1, namaCustomerField.getText().trim());
+                    ps.setInt(2, id);
+                    ps.execute();
+                }
+                
                 stmt.close();
                 conn.close();
             } catch (Exception en) {
@@ -124,10 +155,12 @@ public class editProjectLayer extends javax.swing.JFrame {
         }
     }
     
-    private void launch(String nama, LocalDate start, LocalDate end, String manager, ArrayList<String> worker) {
+    private void launch(String nama_cus, String nama, LocalDate start, LocalDate end, String manager, ArrayList<String> worker) {
         try {
             OKButton.addActionListener(new handler());
             cancelButton.addActionListener(new handler2());
+            
+            namaCustomerField.setText(nama_cus);
             namaProjectField.setText(nama);
             String st;
             
@@ -193,11 +226,12 @@ public class editProjectLayer extends javax.swing.JFrame {
         }
     }
     
-    public editProjectLayer(String nama, LocalDate start, LocalDate end, String manager, ArrayList<String> worker) {
+    public editProjectLayer(String nama_cus, String nama, LocalDate start, LocalDate end, String manager, ArrayList<String> worker) {
         initComponents();
         if (nama.equals("")) isNew = true;
         prev_nama = nama;
-        launch(nama, start, end, manager, worker);
+        this.nama_cus = nama_cus;
+        launch(nama_cus, nama, start, end, manager, worker);
     }
 
     /**
@@ -229,6 +263,8 @@ public class editProjectLayer extends javax.swing.JFrame {
         OKButton = new javax.swing.JButton();
         dateStartSpinner = new javax.swing.JSpinner();
         dateEndSpinner = new javax.swing.JSpinner();
+        jLabel1 = new javax.swing.JLabel();
+        namaCustomerField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -270,46 +306,55 @@ public class editProjectLayer extends javax.swing.JFrame {
 
         dateEndSpinner.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), new java.util.Date(1262278800000L), null, java.util.Calendar.DAY_OF_MONTH));
 
+        jLabel1.setText("Nama Customer");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(subordinate4ProjectLabel)
-                    .addComponent(subordinate3ProjectLabel)
-                    .addComponent(subordinate2ProjectLabel)
-                    .addComponent(subordinate5ProjectLabel)
-                    .addComponent(managerProjectLabel)
-                    .addComponent(subordinate1ProjectLabel)
-                    .addComponent(projectNameLabel)
-                    .addComponent(tglMulaiLabel)
-                    .addComponent(deadlineLabel))
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(subordinateCombo5, 0, 182, Short.MAX_VALUE)
-                    .addComponent(subordinateCombo2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(subordinateCombo3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(subordinateCombo4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(dateEndSpinner, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
-                        .addComponent(managerCombo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(namaProjectField, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(dateStartSpinner, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(subordinateCombo1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(45, 45, 45))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(93, 93, 93)
-                .addComponent(cancelButton)
-                .addGap(61, 61, 61)
-                .addComponent(OKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(cancelButton)
+                        .addGap(79, 79, 79)
+                        .addComponent(OKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(109, 109, 109))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(subordinate4ProjectLabel)
+                            .addComponent(subordinate3ProjectLabel)
+                            .addComponent(subordinate2ProjectLabel)
+                            .addComponent(subordinate5ProjectLabel)
+                            .addComponent(managerProjectLabel)
+                            .addComponent(subordinate1ProjectLabel)
+                            .addComponent(projectNameLabel)
+                            .addComponent(tglMulaiLabel)
+                            .addComponent(deadlineLabel)
+                            .addComponent(jLabel1))
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(subordinateCombo5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(subordinateCombo2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(subordinateCombo3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(subordinateCombo4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dateEndSpinner)
+                            .addComponent(namaProjectField)
+                            .addComponent(dateStartSpinner)
+                            .addComponent(subordinateCombo1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(managerCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(namaCustomerField))
+                        .addGap(42, 42, 42))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(40, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(namaCustomerField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(projectNameLabel)
                     .addComponent(namaProjectField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -349,7 +394,7 @@ public class editProjectLayer extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
                     .addComponent(OKButton))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addGap(31, 31, 31))
         );
 
         pack();
@@ -365,8 +410,10 @@ public class editProjectLayer extends javax.swing.JFrame {
     private javax.swing.JSpinner dateEndSpinner;
     private javax.swing.JSpinner dateStartSpinner;
     private javax.swing.JLabel deadlineLabel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JComboBox<String> managerCombo;
     private javax.swing.JLabel managerProjectLabel;
+    private javax.swing.JTextField namaCustomerField;
     private javax.swing.JTextField namaProjectField;
     private javax.swing.JLabel projectNameLabel;
     private javax.swing.JLabel subordinate1ProjectLabel;
