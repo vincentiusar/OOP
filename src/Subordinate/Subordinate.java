@@ -4,8 +4,8 @@ import Employee.Employee;
 public class Subordinate extends Employee{
     private String divisi;
     
-    public Subordinate(String id, String nama, String jabatan, String divisi) {
-        super(id, nama, jabatan);
+    public Subordinate(String id, String nama, String jabatan, String divisi, String id_company) {
+        super(id, nama, jabatan, id_company);
         this.setDivisi(divisi);
     }
 

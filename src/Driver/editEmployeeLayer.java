@@ -58,53 +58,63 @@ public class editEmployeeLayer extends javax.swing.JFrame {
                     now_jabatan = "subordinate";
                 }
                 now_divisi = divTextField.getText().trim();
+                
+                int id_comp = 0;
+                String st;
+                st = "SELECT id_company FROM company WHERE nama = '" + companyCombo.getSelectedItem() + "'";
+                rs = stmt.executeQuery(st);
+                while (rs.next()) {
+                    id_comp = rs.getInt("id_company");
+                }
+                
                 if ("".equals(now_nama) || (!radioManager.isSelected() && !radioSubor.isSelected()) || "".equals(now_divisi)) {
                     errorLayer mee = new errorLayer();
                     mee.setVisible(true);
                     return;
                 }
                 
-                
                 if (isNew) {        // jika datanya baru, lakukan insert
-                    String st = "";
                     if ("Manager".equals(now_jabatan)) {
-                        st = "INSERT INTO manager (nama, jabatan, headof) VALUES (?, ?, ?);";
+                        st = "INSERT INTO manager (nama, jabatan, headof, id_company) VALUES (?, ?, ?, ?);";
                     } else {
-                        st = "INSERT INTO subordinate (nama, jabatan, divisi) VALUES (?, ?, ?);";
+                        st = "INSERT INTO subordinate (nama, jabatan, divisi, id_company) VALUES (?, ?, ?, ?);";
                     }
                     PreparedStatement ps = conn.prepareStatement(st);
                     ps.setString(1, now_nama);
                     ps.setString(2, now_jabatan);
                     ps.setString(3, now_divisi);
+                    ps.setInt(4, id_comp);
+                    
                     ps.execute();
                 } else {            // selain itu, lakukan update
                     if (prev_jabatan.equals(now_jabatan)) {
-                        String st;
                         if ("Manager".equals(now_jabatan)) {
-                            st = "UPDATE " + now_jabatan + " SET nama = ?, headof = ? WHERE nama = ?";
+                            st = "UPDATE " + now_jabatan + " SET nama = ?, headof = ?, id_company = ? WHERE nama = ?";
                         } else {
-                            st = "UPDATE " + now_jabatan + " SET nama = ?, divisi = ? WHERE nama = ?";
+                            st = "UPDATE " + now_jabatan + " SET nama = ?, divisi = ?, id_company = ? WHERE nama = ?";
                         }
                         PreparedStatement ps = conn.prepareStatement(st);
                         ps.setString(1, now_nama);
                         ps.setString(2, now_divisi);
-                        ps.setString(3, prev_nama); 
+                        ps.setInt(3, id_comp);
+                        ps.setString(4, prev_nama);
                         ps.execute();
                     } else {
-                        String st = "DELETE FROM " + prev_jabatan + " WHERE nama = ?";
+                        st = "DELETE FROM " + prev_jabatan + " WHERE nama = ?";
                         PreparedStatement ps = conn.prepareStatement(st);
                         ps.setString(1, prev_nama);
                         ps.execute();
                         
                         if ("Manager".equals(now_jabatan)) {
-                            st = "INSERT INTO manager (nama, jabatan, headof) VALUES (?, ?, ?);";
+                            st = "INSERT INTO manager (nama, jabatan, headof, id_company) VALUES (?, ?, ?, ?);";
                         } else {
-                            st = "INSERT INTO subordinate (nama, jabatan, divisi) VALUES (?, ?, ?);";
+                            st = "INSERT INTO subordinate (nama, jabatan, divisi, id_company) VALUES (?, ?, ?, ?);";
                         }
                         ps = conn.prepareStatement(st);
                         ps.setString(1, now_nama);
                         ps.setString(2, now_jabatan);
                         ps.setString(3, now_divisi);
+                        ps.setInt(4, id_comp);
                         ps.execute();
                     }
                     stmt.close();
@@ -133,7 +143,7 @@ public class editEmployeeLayer extends javax.swing.JFrame {
         }
     }
        
-    private void launch(String nama, String jabatan, String div) {
+    private void launch(String nama, String jabatan, String div, String company) {
         
         /*
             I.S. fungsi pertama yang berjalan sebagai initiatior
@@ -151,12 +161,29 @@ public class editEmployeeLayer extends javax.swing.JFrame {
             showTextIf.setText("Divisi");
         }
         divTextField.setText(div);
+        String st = "SELECT * FROM company";
+        try {
+            conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(st);
+            while (rs.next()) {
+                companyCombo.addItem(rs.getString("nama"));
+                if (rs.getString("nama").equals(company)) {
+                    id_comp = rs.getInt("id_company");
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        companyCombo.setSelectedItem(company);
+        
     }
     
     String now_nama, now_jabatan, now_divisi;           // menampung nama employee setelah diubah, jabatan, dan divisinya
     String prev_nama, prev_jabatan, prev_divisi;        // menampung nama employee sebelum diubah, jabatan, dan divisinya
+    String company; int id_comp;
     
-    public editEmployeeLayer(String nama, String jabatan, String divisi) {
+    public editEmployeeLayer(String nama, String jabatan, String divisi, String company) {
         
         /*
             I.S. konstrutor layer
@@ -168,7 +195,8 @@ public class editEmployeeLayer extends javax.swing.JFrame {
         prev_nama = nama;
         prev_jabatan = jabatan;
         prev_divisi = divisi;
-        launch(nama, jabatan, divisi);
+        this.company = company;
+        launch(nama, jabatan, divisi, company);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -189,6 +217,8 @@ public class editEmployeeLayer extends javax.swing.JFrame {
         divTextField = new javax.swing.JTextField();
         OKButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+        companyOfEmployeeLabel = new javax.swing.JLabel();
+        companyCombo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -208,6 +238,8 @@ public class editEmployeeLayer extends javax.swing.JFrame {
 
         cancelButton.setText("Cancel");
 
+        companyOfEmployeeLabel.setText("Company");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -216,22 +248,29 @@ public class editEmployeeLayer extends javax.swing.JFrame {
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jabatanLabel)
-                            .addComponent(namaLabel)
-                            .addComponent(showTextIf))
-                        .addGap(47, 47, 47)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(radioManager)
-                                .addGap(18, 18, 18)
-                                .addComponent(radioSubor))
-                            .addComponent(namaTextField)
-                            .addComponent(divTextField)))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(cancelButton)
                         .addGap(69, 69, 69)
-                        .addComponent(OKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(OKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jabatanLabel)
+                            .addGap(47, 47, 47)
+                            .addComponent(radioManager)
+                            .addGap(18, 18, 18)
+                            .addComponent(radioSubor))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(namaLabel)
+                                    .addComponent(showTextIf, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(2, 2, 2)
+                                    .addComponent(companyOfEmployeeLabel)))
+                            .addGap(38, 38, 38)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(namaTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                                .addComponent(divTextField)
+                                .addComponent(companyCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap(102, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -241,16 +280,20 @@ public class editEmployeeLayer extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(namaLabel)
                     .addComponent(namaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jabatanLabel)
                     .addComponent(radioManager)
                     .addComponent(radioSubor))
-                .addGap(35, 35, 35)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(divTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(showTextIf))
-                .addGap(25, 25, 25)
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(companyOfEmployeeLabel)
+                    .addComponent(companyCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cancelButton)
                     .addComponent(OKButton))
@@ -268,6 +311,8 @@ public class editEmployeeLayer extends javax.swing.JFrame {
     private javax.swing.JButton OKButton;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cancelButton;
+    private javax.swing.JComboBox<String> companyCombo;
+    private javax.swing.JLabel companyOfEmployeeLabel;
     private javax.swing.JTextField divTextField;
     private javax.swing.JLabel jabatanLabel;
     private javax.swing.JLabel namaLabel;

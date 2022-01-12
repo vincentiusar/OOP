@@ -64,7 +64,7 @@ public class deleteProjectLayer extends javax.swing.JFrame {
     private class handler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             try {
-                conn = DriverManager.getConnection(DB_URL, DB_USER,DB_PASS);
+                conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
                 stmt = conn.createStatement();
                 
                 String st = "";

@@ -4,8 +4,8 @@ import Employee.Employee;
 public class Manager extends Employee{
     private String headOf;
     
-    public Manager(String id, String nama, String jabatan, String headOf) {
-        super(id, nama, jabatan);
+    public Manager(String id, String nama, String jabatan, String headOf, String id_company) {
+        super(id, nama, jabatan, id_company);
         this.setHeadOf(headOf);
     }
 
