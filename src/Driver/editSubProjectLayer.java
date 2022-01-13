@@ -74,86 +74,90 @@ public class editSubProjectLayer extends javax.swing.JFrame {
                     return;
                 }
                 
-                PreparedStatement ps = conn.prepareStatement(st);     
-                ps.setString(1, namaTextField.getText().trim());
-                ps.setBoolean(2, selesaiRadio.isSelected());
-                
-                st = "SELECT id_project FROM project WHERE nama = '" + projectCombo.getSelectedItem().toString() + "'";
-                rs = stmt.executeQuery(st);
-                
-                int id = 0;
-                while (rs.next()) {
-                    id = rs.getInt("id_project");
-                }
-                
-                ps.setInt(3, id);
-                
-                if (!isNew) ps.setString(4, prev_nama);
-                ps.execute();
-                
-                String sub = "", prev_sub = "";
-                st = "SELECT subproject FROM project WHERE id_project = " + id;
-                rs = stmt.executeQuery(st);
-                while (rs.next()) {
-                    sub += rs.getString("subproject");
-                }
-                
-                st = "SELECT subproject FROM project WHERE id_project = " + prev_id;
-                rs = stmt.executeQuery(st);
-                while (rs.next()) {
-                    prev_sub += rs.getString("subproject");
-                }
+                try {
+                    PreparedStatement ps = conn.prepareStatement(st);     
+                    ps.setString(1, namaTextField.getText().trim());
+                    ps.setBoolean(2, selesaiRadio.isSelected());
 
-                st = "UPDATE project SET subProject = ? WHERE id_project = ?";
-                ps = conn.prepareStatement(st);
-                
-                if (isNew) {
-                    sub = sub.substring(0, sub.length() - 1);
-                    if (sub.charAt(sub.length()-1) == '[')
-                        sub += "\"" + namaTextField.getText().trim() + "\"]";
-                    else sub += ", \"" + namaTextField.getText().trim() + "\"]";
-                } else if (id == prev_id) {
-                    ArrayList<String> tmp = toArrayString(sub);
-                    int pos = tmp.indexOf(prev_nama);
-                    tmp.set(pos, namaTextField.getText().trim());
-                    String sp = "[";
-                    for (String s : tmp) {
-                        sp += "\"" + s + "\",";
-                    }
-                    sp += "]";
-                    sub = sp;
-                } else {
-                    ArrayList<String> tmp = toArrayString(sub);
-                    ArrayList<String> tmp2 = toArrayString(prev_sub);
-                    int pos1 = tmp2.indexOf(prev_nama);
-                    tmp2.remove(pos1);
-                    tmp.add(namaTextField.getText().trim());
-                    String sp2 = "[";
-                    for (String s : tmp2) {
-                        sp2 += "\"" + s + "\",";
-                    }
-                    sp2 += "]";
-                    prev_sub = sp2;
-                    
-                    String sp = "[";
-                    for (String s : tmp) {
-                        sp += "\"" + s + "\",";
-                    }
-                    sp += "]";
-                    sub = sp;
-                }
-                ps.setString(1, sub);
-                ps.setInt(2, id);
-                ps.execute();
-                
-                st = "UPDATE project SET subProject = ? WHERE id_project = ?";
-                ps = conn.prepareStatement(st);
-                ps.setString(1, prev_sub);
-                ps.setInt(2, prev_id);
-                ps.execute();
+                    st = "SELECT id_project FROM project WHERE nama = '" + projectCombo.getSelectedItem().toString() + "'";
+                    rs = stmt.executeQuery(st);
 
-                stmt.close();
-                conn.close();
+                    int id = 0;
+                    while (rs.next()) {
+                        id = rs.getInt("id_project");
+                    }
+
+                    ps.setInt(3, id);
+
+                    if (!isNew) ps.setString(4, prev_nama);
+                    ps.execute();
+
+                    String sub = "", prev_sub = "";
+                    st = "SELECT subproject FROM project WHERE id_project = " + id;
+                    rs = stmt.executeQuery(st);
+                    while (rs.next()) {
+                        sub += rs.getString("subproject");
+                    }
+
+                    st = "SELECT subproject FROM project WHERE id_project = " + prev_id;
+                    rs = stmt.executeQuery(st);
+                    while (rs.next()) {
+                        prev_sub += rs.getString("subproject");
+                    }
+
+                    st = "UPDATE project SET subProject = ? WHERE id_project = ?";
+                    ps = conn.prepareStatement(st);
+
+                    if (isNew) {
+                        sub = sub.substring(0, sub.length() - 1);
+                        if (sub.charAt(sub.length()-1) == '[')
+                            sub += "\"" + namaTextField.getText().trim() + "\"]";
+                        else sub += ", \"" + namaTextField.getText().trim() + "\"]";
+                    } else if (id == prev_id) {
+                        ArrayList<String> tmp = toArrayString(sub);
+                        int pos = tmp.indexOf(prev_nama);
+                        tmp.set(pos, namaTextField.getText().trim());
+                        String sp = "[";
+                        for (String s : tmp) {
+                            sp += "\"" + s + "\",";
+                        }
+                        sp += "]";
+                        sub = sp;
+                    } else {
+                        ArrayList<String> tmp = toArrayString(sub);
+                        ArrayList<String> tmp2 = toArrayString(prev_sub);
+                        int pos1 = tmp2.indexOf(prev_nama);
+                        tmp2.remove(pos1);
+                        tmp.add(namaTextField.getText().trim());
+                        String sp2 = "[";
+                        for (String s : tmp2) {
+                            sp2 += "\"" + s + "\",";
+                        }
+                        sp2 += "]";
+                        prev_sub = sp2;
+
+                        String sp = "[";
+                        for (String s : tmp) {
+                            sp += "\"" + s + "\",";
+                        }
+                        sp += "]";
+                        sub = sp;
+                    }
+                    ps.setString(1, sub);
+                    ps.setInt(2, id);
+                    ps.execute();
+
+                    st = "UPDATE project SET subProject = ? WHERE id_project = ?";
+                    ps = conn.prepareStatement(st);
+                    ps.setString(1, prev_sub);
+                    ps.setInt(2, prev_id);
+                    ps.execute();
+
+                    stmt.close();
+                    conn.close();
+                } catch (NullPointerException en) {
+                    System.out.println("");
+                }
             } catch (Exception a) {
                 a.printStackTrace();
             } finally {

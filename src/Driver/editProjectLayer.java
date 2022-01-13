@@ -204,12 +204,12 @@ public class editProjectLayer extends javax.swing.JFrame {
                     System.out.print("");
                 } 
                 try {
-                    subordinateCombo3.setSelectedItem(worker.get(3));
+                    subordinateCombo4.setSelectedItem(worker.get(3));
                 } catch (Exception en) {
                     System.out.print("");
                 }
                 try {
-                    subordinateCombo3.setSelectedItem(worker.get(4));
+                    subordinateCombo5.setSelectedItem(worker.get(4));
                 } catch (Exception en) {
                     System.out.print("");
                 }
