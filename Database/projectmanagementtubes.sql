@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2022 at 12:27 PM
+-- Generation Time: Jan 13, 2022 at 11:33 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -39,7 +39,7 @@ CREATE TABLE `company` (
 INSERT INTO `company` (`id_company`, `nama`) VALUES
 (0, 'ajigile'),
 (1, 'ajikonde brok'),
-(4, 'mamank resink');
+(4, 'mamank resing');
 
 -- --------------------------------------------------------
 
@@ -58,13 +58,9 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id_cus`, `nama`, `id_project`) VALUES
-(1, 'google.com', 1),
-(4, 'Facebook.com', 2),
-(5, 'tukang bakso coba', 3),
-(6, 'tukang yes', 4),
-(7, 'tukang coba coba', 5),
-(8, 'orang ngaret', 6),
-(10, 'tukang bakso coba coba', 14);
+(12, 'PT Dwicak Petot', 16),
+(13, 'PT Masker Memang', 17),
+(14, 'PT Merdeka', 18);
 
 -- --------------------------------------------------------
 
@@ -85,11 +81,10 @@ CREATE TABLE `manager` (
 --
 
 INSERT INTO `manager` (`id`, `nama`, `jabatan`, `headof`, `id_company`) VALUES
-(2, 'aduh mamank', 'Manager', 'admin', 0),
-(57, 'nama saya siapa', 'Manager', 'aduh abdul', 0),
-(61, 'aku bukan diriku', 'Manager', 'marketing', 0),
-(63, 'aku adalah lelaki', 'Manager', 'admin', 0),
-(67, 'pembalap', 'Manager', 'balapan', 4);
+(68, 'Ahmad Kurniawan', 'Manager', 'Network', 0),
+(69, 'Hadi Wijaya', 'Manager', 'maintainance', 1),
+(70, 'Bobi Saputro', 'Manager', 'konsumsi', 0),
+(71, 'Al Faizi', 'Manager', 'kesehatan', 4);
 
 -- --------------------------------------------------------
 
@@ -112,13 +107,9 @@ CREATE TABLE `project` (
 --
 
 INSERT INTO `project` (`id_project`, `nama`, `timeStart`, `timeEnd`, `manager`, `worker`, `subProject`) VALUES
-(1, 'Maintain Google', '2021-12-08', '2021-12-23', 'aku adalah lelaki', '[\"saya gila\", \"eya eyaaaa\", \"aku adalah diriku\"]', '[\"tukang AC\",\"cuci Kulkas\",\"tim doa\",]'),
-(2, 'Facebook Vunerability', '2021-12-08', '2021-12-29', 'aduh mamank', '[\"saya gila\"]', '[\"matiin lampu\", \"cuci piring\"]'),
-(3, 'coba nih pasti', '2021-12-08', '2021-12-23', 'aku adalah lelaki', '[\"aku adalah diriku\"]', '[\"bener kah?\",\"baa\",]'),
-(4, 'YESSSs', '2021-12-31', '2022-12-31', 'nama saya siapa', '[\"eya eyaaaa\", \"saya gila\"]', '[\"yes 1\"]'),
-(5, 'bisa nih liatin aja', '2021-12-31', '2022-12-31', 'aku bukan diriku', '[\"eya eyaaaa\", \"aku adalah diriku\", \"aku ingat namaku\"]', '[\"makan nasi\"]'),
-(6, 'coba delay', '2022-01-07', '2022-01-08', 'aduh mamank', '[\"aku adalah diriku\"]', '[\"coba delayed 1\"]'),
-(14, 'coba makan bakso borax', '2022-01-12', '2022-01-12', 'aku adalah lelaki', '[\"saya gila\"]', '[\"mati makan borax\"]');
+(16, 'Maintain Data Center', '2022-01-12', '2022-01-12', 'Ahmad Kurniawan', '[\"Bobo Sam Agadis\", \"Nur Uta Iga\", \"Suharjo Nampar\"]', '[\"Server Checking\", \"Cable Checking\", \"Database Checking\"]'),
+(17, 'Power Support GBK', '2022-01-12', '2022-03-02', 'Al Faizi', '[\"Konro Babat\", \"Bobo Sam Agadis\", \"Suharjo Nampar\", \"Hermano Juming\", \"Chou Lie\"]', '[\"Listrik A1\", \"Gen set 900KWH\"]'),
+(18, 'Covid-19 Vaccine A19', '2022-01-13', '2022-12-15', 'Bobi Saputro', '[\"Suharjo Nampar\", \"Bobo Sam Agadis\", \"Nur Uta Iga\", \"Chou Lie\", \"Konro Babat\"]', '[\"900 Peoples Done\", \"Predict Mount\"]');
 
 -- --------------------------------------------------------
 
@@ -139,10 +130,12 @@ CREATE TABLE `subordinate` (
 --
 
 INSERT INTO `subordinate` (`id`, `nama`, `jabatan`, `divisi`, `id_company`) VALUES
-(2, 'eya eyaaaa', 'subordinate', 'database', 0),
-(33, 'aku adalah diriku', 'subordinate', 'project gajelas', 0),
-(37, 'aku ingat namaku', 'subordinate', 'admin', 0),
-(52, 'saya gila', 'subordinate', 'networking', 1);
+(62, 'Suharjo Nampar', 'subordinate', 'Network', 4),
+(63, 'Bobo Sam Agadis', 'subordinate', 'maintanance', 0),
+(64, 'Nur Uta Iga', 'subordinate', 'konsumsi', 0),
+(65, 'Hermano Juming', 'subordinate', 'kesehatan', 1),
+(66, 'Chou Lie', 'subordinate', 'Maintainance', 1),
+(67, 'Konro Babat', 'subordinate', 'kesehatan', 0);
 
 -- --------------------------------------------------------
 
@@ -162,17 +155,13 @@ CREATE TABLE `subproject` (
 --
 
 INSERT INTO `subproject` (`id`, `nama`, `isDone`, `id_project`) VALUES
-(1, 'tukang AC', 1, 1),
-(2, 'cuci Kulkas', 1, 1),
-(3, 'tim doa', 1, 1),
-(4, 'cuci piring', 0, 2),
-(5, 'matiin lampu', 1, 2),
-(13, 'bener kah?', 0, 3),
-(14, 'baa', 0, 3),
-(15, 'makan nasi', 1, 5),
-(16, 'coba delayed 1', 0, 6),
-(17, 'yes 1', 0, 4),
-(18, 'mati makan borax', 0, 14);
+(20, 'Server Checking', 1, 16),
+(21, 'Cable Checking', 1, 16),
+(22, 'Database Checking', 0, 16),
+(23, 'Listrik A1', 1, 17),
+(24, 'Gen set 900KWH', 1, 17),
+(25, '900 Peoples Done', 0, 18),
+(26, 'Predict Mount', 0, 18);
 
 --
 -- Indexes for dumped tables
@@ -232,31 +221,31 @@ ALTER TABLE `company`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id_cus` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_cus` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `manager`
 --
 ALTER TABLE `manager`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `id_project` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_project` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `subordinate`
 --
 ALTER TABLE `subordinate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `subproject`
 --
 ALTER TABLE `subproject`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- Constraints for dumped tables
