@@ -86,6 +86,7 @@ public class driver extends javax.swing.JFrame {
                             showJabatanLabel.setText(M.getJabatan());
                             showDivisiLabel.setText(M.getHeadOf());
                             showCompanyEmployee.setText(M.getNamaCompany());
+                            showGajiLabel.setText(M.hitungGaji());
                             nama = M.getNama();
                             jabatan = M.getJabatan();
                             div = M.getHeadOf();
@@ -152,6 +153,7 @@ public class driver extends javax.swing.JFrame {
                             showJabatanLabel.setText(M.getJabatan());
                             showDivisiLabel.setText(M.getDivisi());
                             showCompanyEmployee.setText(M.getNamaCompany());
+                            showGajiLabel.setText(M.hitungGaji());
                             nama = M.getNama();
                             jabatan = M.getJabatan();
                             div = M.getDivisi();
@@ -663,6 +665,8 @@ public class driver extends javax.swing.JFrame {
         hapusDataButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         showCompanyEmployee = new javax.swing.JLabel();
+        labelGaji = new javax.swing.JLabel();
+        showGajiLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         ListProjectLabel = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -751,35 +755,46 @@ public class driver extends javax.swing.JFrame {
 
         showCompanyEmployee.setText(" ");
 
+        labelGaji.setText("Gaji");
+
+        showGajiLabel.setText(" ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ListManagerLabel)
-                    .addComponent(newManagerButton)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(editManagerButton))
-                .addGap(67, 67, 67)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ListPekerjaLabel)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(editPekerjaButton)
-                    .addComponent(newPekerjaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel3)
-                    .addComponent(hapusDataButton)
-                    .addComponent(LabelNama)
-                    .addComponent(LabelJabatan)
-                    .addComponent(LabelDivisi)
-                    .addComponent(showNamaLabel)
-                    .addComponent(showJabatanLabel)
-                    .addComponent(showCompanyEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
-                    .addComponent(showDivisiLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(199, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(132, 132, 132)
+                        .addComponent(hapusDataButton))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ListManagerLabel)
+                            .addComponent(newManagerButton)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(editManagerButton))
+                        .addGap(67, 67, 67)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ListPekerjaLabel)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(editPekerjaButton)
+                            .addComponent(newPekerjaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(showGajiLabel)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel3)
+                                .addComponent(LabelNama)
+                                .addComponent(LabelJabatan)
+                                .addComponent(LabelDivisi)
+                                .addComponent(showNamaLabel)
+                                .addComponent(showJabatanLabel)
+                                .addComponent(showCompanyEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                                .addComponent(showDivisiLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labelGaji)))))
+                .addContainerGap(245, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -789,35 +804,41 @@ public class driver extends javax.swing.JFrame {
                     .addComponent(ListManagerLabel)
                     .addComponent(ListPekerjaLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(LabelNama)
-                        .addGap(11, 11, 11)
-                        .addComponent(showNamaLabel)
-                        .addGap(26, 26, 26)
-                        .addComponent(LabelJabatan)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(showJabatanLabel)
-                        .addGap(26, 26, 26)
-                        .addComponent(LabelDivisi)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane2)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(LabelNama)
+                                .addGap(11, 11, 11)
+                                .addComponent(showNamaLabel)
+                                .addGap(26, 26, 26)
+                                .addComponent(LabelJabatan)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(showJabatanLabel)
+                                .addGap(26, 26, 26)
+                                .addComponent(LabelDivisi)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showDivisiLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel3)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(showDivisiLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(newPekerjaButton)
+                                .addComponent(showCompanyEmployee))
+                            .addComponent(newManagerButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(editManagerButton)
+                            .addComponent(editPekerjaButton)))
+                    .addComponent(labelGaji))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(newPekerjaButton)
-                        .addComponent(showCompanyEmployee))
-                    .addComponent(newManagerButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(editManagerButton)
-                    .addComponent(editPekerjaButton)
-                    .addComponent(hapusDataButton))
-                .addGap(101, 198, Short.MAX_VALUE))
+                .addComponent(showGajiLabel)
+                .addGap(24, 24, 24)
+                .addComponent(hapusDataButton)
+                .addContainerGap(134, Short.MAX_VALUE))
         );
 
         employeeTabs.addTab("Employee", jPanel1);
@@ -1199,6 +1220,7 @@ public class driver extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JLabel labelGaji;
     private javax.swing.JLabel managerLabel;
     private javax.swing.JLabel namaProjectLabel;
     private javax.swing.JLabel namaSubProjectLabel;
@@ -1212,6 +1234,7 @@ public class driver extends javax.swing.JFrame {
     private javax.swing.JLabel showCompanyName;
     private javax.swing.JLabel showCustomerLabel;
     private javax.swing.JLabel showDivisiLabel;
+    private javax.swing.JLabel showGajiLabel;
     private javax.swing.JLabel showIndukProject;
     private javax.swing.JLabel showJabatanLabel;
     private javax.swing.JLabel showManager;
